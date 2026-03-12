@@ -1,0 +1,15 @@
+<svg width="400" height="230" viewBox="0 0 400 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="accent" x1="0" y1="0" x2="400" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C07AB8"/>
+      <stop offset="1" stop-color="#8C4A88"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="230" fill="none"/>
+  <text x="16" y="82" fill="#F2F2F5" font-family="'Inter','Poppins','Helvetica Neue',Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="4">RINO</text>
+  <text x="16" y="150" fill="#F2F2F5" font-family="'Inter','Poppins','Helvetica Neue',Arial,sans-serif" font-size="68" font-weight="800" letter-spacing="4">MED</text>
+  <text x="290" y="76" fill="#6E6E73" font-family="'Inter','Poppins','Helvetica Neue',Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="2">20</text>
+  <text x="290" y="118" fill="#6E6E73" font-family="'Inter','Poppins','Helvetica Neue',Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="2">26</text>
+  <rect x="16" y="170" width="260" height="26" rx="6" fill="url(#accent)"/>
+  <text x="28" y="188" fill="#1C1C1C" font-family="'Inter','Poppins','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="800" letter-spacing="2">ABRIL 17/18</text>
+</svg>

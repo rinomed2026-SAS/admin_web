@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ASSISTANT
+  PROFESSOR
+  STAFF
+  ADMIN
+}
+
+model User {
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  passwordHash String
+  role         Role
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  favorites    Favorite[]
+  questions    Question[]
+  sponsorLeads SponsorLead[]
+  refreshTokens RefreshToken[]
+}
+
+model Session {
+  id          String           @id @default(uuid())
+  day         DateTime
+  startTime   String
+  endTime     String
+  room        String
+  title       String
+  topic       String
+  level       String
+  description String
+  speakers    SessionSpeaker[]
+  favorites   Favorite[]
+  questions   Question[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model Speaker {
+  id           String           @id @default(uuid())
+  name         String
+  country      String
+  specialty    String
+  bio          String
+  photoUrl     String
+  websiteUrl   String?          @default("")
+  instagramUrl String?          @default("")
+  sessions     SessionSpeaker[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model SessionSpeaker {
+  sessionId String
+  speakerId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  speaker   Speaker @relation(fields: [speakerId], references: [id], onDelete: Cascade)
+
+  @@id([sessionId, speakerId])
+}
+
+model Favorite {
+  userId    String
+  sessionId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, sessionId])
+}
+
+model Question {
+  id        String   @id @default(uuid())
+  userId    String
+  sessionId String
+  text      String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Sponsor {
+  id          String        @id @default(uuid())
+  name        String
+  tier        String
+  description String
+  websiteUrl  String
+  products    String
+  leads       SponsorLead[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model SponsorLead {
+  id        String   @id @default(uuid())
+  userId    String
+  sponsorId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sponsor   Sponsor  @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Hotel {
+  id           String   @id @default(uuid())
+  name         String
+  rating       Float
+  priceMinCop  Int
+  priceMaxCop  Int
+  distanceKm   Float
+  amenities    String
+  contact      String
+  promoCode    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Tourism {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  duration    String
+  highlights  String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EventInfo {
+  id            Int      @id
+  name          String
+  city          String
+  dates         String
+  venue         String
+  address       String
+  email         String
+  phone         String
+  whatsapp      String
+  website       String
+  mapsUrl       String
+  academicHours String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
