@@ -56,7 +56,9 @@ export function Dashboard() {
           <div key={item.key} className="stat-card">
             <div style={{ fontSize: '24px', marginBottom: '8px' }}>{item.icon}</div>
             <div className="stat-label">{item.label}</div>
-            <div className="stat-value">{stats[item.key as keyof typeof stats]}</div>
+            <div className="stat-value">
+              {loading ? '...' : stats[item.key as keyof typeof stats]}
+            </div>
           </div>
         ))}
       </div>
