@@ -9,9 +9,9 @@ sessionsRouter.get('/', optionalAuth, async (req, res, next) => {
             day: z.string().optional(),
             query: z.string().optional(),
             page: z.coerce.number().min(1).optional(),
-            limit: z.coerce.number().min(1).max(50).optional()
+            limit: z.coerce.number().min(1).max(200).optional()
         });
-        const { day, query, page = 1, limit = 20 } = querySchema.parse(req.query);
+        const { day, query, page = 1, limit = 100 } = querySchema.parse(req.query);
         const where = {};
         if (day) {
             where.day = new Date(day);
