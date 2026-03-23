@@ -29,7 +29,7 @@ export function Speakers() {
         { name: 'country', label: 'País' },
         { name: 'specialty', label: 'Especialidad' },
         { name: 'bio', label: 'Bio', type: 'textarea' },
-        { name: 'photoUrl', label: 'Foto URL' },
+        { name: 'photoUrl', label: 'Foto', type: 'file', accept: 'image/*' },
         { name: 'websiteUrl', label: 'Página Web' },
         { name: 'instagramUrl', label: 'Instagram' }
       ]}
@@ -45,6 +45,7 @@ export function Sponsors() {
       fields={[
         { name: 'name', label: 'Nombre' },
         { name: 'tier', label: 'Nivel' },
+        { name: 'logoUrl', label: 'Logo', type: 'file', accept: 'image/*' },
         { name: 'description', label: 'Descripción', type: 'textarea' },
         { name: 'websiteUrl', label: 'Website' },
         { name: 'products', label: 'Productos' }

@@ -35,7 +35,7 @@ app.use(helmet({
 }));
 app.use(cors({ origin: config.corsOrigin, credentials: true }));
 app.use(morgan('tiny'));
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '12mb' }));
 app.use(privacyRouter);
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/v1/auth', authRouter);

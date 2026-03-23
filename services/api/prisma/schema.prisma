@@ -92,6 +92,7 @@ model Sponsor {
   id          String        @id @default(uuid())
   name        String
   tier        String
+  logoUrl     String        @default("")
   description String
   websiteUrl  String
   products    String

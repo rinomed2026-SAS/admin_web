@@ -114,6 +114,7 @@ adminRouter.delete('/speakers/:id', async (req, res, next) => {
 const sponsorSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   tier: z.string().min(1, 'Tier is required'),
+  logoUrl: z.string().optional().default(''),
   description: z.string().optional().default(''),
   websiteUrl: z.string().optional().default(''),
   products: z.string().optional().default('')

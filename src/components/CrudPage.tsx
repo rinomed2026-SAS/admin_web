@@ -4,8 +4,10 @@ import { apiFetch } from '../api';
 export type Field = {
   name: string;
   label: string;
-  type?: 'text' | 'number' | 'textarea' | 'date';
+  type?: 'text' | 'number' | 'textarea' | 'date' | 'file';
   required?: boolean;
+  accept?: string;
+  uploadTarget?: string;
 };
 
 type CrudPageProps = {
@@ -22,6 +24,15 @@ function formatValidationErrors(errors: any): string {
     return msgs || 'Validation failed';
   }
   return 'Validation failed';
+}
+
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result ?? ''));
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo'));
+    reader.readAsDataURL(file);
+  });
 }
 
 export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
@@ -131,6 +142,32 @@ export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
                   onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
                   disabled={loading}
                 />
+              ) : field.type === 'file' ? (
+                <>
+                  <input
+                    type="file"
+                    accept={field.accept ?? 'image/*'}
+                    disabled={loading}
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      try {
+                        const dataUrl = await fileToDataUrl(file);
+                        const target = field.uploadTarget ?? field.name;
+                        setForm((prev) => ({ ...prev, [target]: dataUrl }));
+                      } catch (err) {
+                        setError(`Error al cargar archivo: ${err instanceof Error ? err.message : 'desconocido'}`);
+                      }
+                    }}
+                  />
+                  {!!form[field.uploadTarget ?? field.name] && (
+                    <img
+                      src={form[field.uploadTarget ?? field.name]}
+                      alt={field.label}
+                      style={{ width: '72px', height: '72px', objectFit: 'cover', borderRadius: '8px', marginTop: '8px' }}
+                    />
+                  )}
+                </>
               ) : (
                 <input
                   type={field.type ?? 'text'}
@@ -154,7 +191,21 @@ export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
         {items.map((item) => (
           <div className="table-row" key={item.id}>
             {fields.map((field) => (
-              <div key={field.name}>{String(item[field.name] ?? '')}</div>
+              <div key={field.name}>
+                {field.type === 'file' ? (
+                  item[field.uploadTarget ?? field.name] ? (
+                    <img
+                      src={String(item[field.uploadTarget ?? field.name])}
+                      alt={field.label}
+                      style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '6px' }}
+                    />
+                  ) : (
+                    'Sin imagen'
+                  )
+                ) : (
+                  String(item[field.name] ?? '')
+                )}
+              </div>
             ))}
             <div className="actions">
               <button className="btn secondary" onClick={() => handleEdit(item)}>Editar</button>
