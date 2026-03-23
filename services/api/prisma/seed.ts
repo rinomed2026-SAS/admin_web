@@ -21,6 +21,103 @@ async function main() {
   const adminPassword = await hashPassword('Rinomed2026!');
   const attendeePassword = await hashPassword('Rinomed2026!');
 
+  const assistantRoster = [
+    { name: 'CARLOS ANDRES URZOLA MOSQUERA', email: 'carlosurzola36@gmail.com', cedula: '7990526' },
+    { name: 'Sebastian Orozco', email: 'sebastian.orozcoa@udea.edu.co', cedula: '1037582186' },
+    { name: 'Mariana Velez Garces', email: 'mariana.velez1@udea.edu.co', cedula: '1152216203' },
+    { name: 'Manuela Alejandra Rodríguez Cortés', email: 'manuelaroco1@gmail.com', cedula: '1020821066' },
+    { name: 'Lisandro Guerra', email: 'guerralisandro@gmail.com', cedula: '71755048' },
+    { name: 'Santiago Hernandez', email: 'santiagoha32@gmail.com', cedula: '1037634236' },
+    { name: 'Claudia Paola Gonzalez Saboya', email: 'paogon19@hotmail.com', cedula: '1032430003' },
+    { name: 'Gustavo Vanegas', email: 'gusvanegasorl@gmail.com', cedula: '80092720' },
+    { name: 'Natalia Alexandra Yepes Garcia', email: 'natyyepes33@yahoo.com', cedula: '42690766' },
+    { name: 'Ana Verónica Hernández Rodríguez', email: 'anitav0714@gmail.com', cedula: '1020752613' },
+    { name: 'Isis', email: 'glandinez16@hotmail.com', cedula: '79963939' },
+    { name: 'Nataly Vanegas Bustamante', email: 'natyv104@hotmail.com', cedula: '1020406286' },
+    { name: 'Aury Palacios Abadia Palacios Abadía', email: 'aury0812@hotmail.com', cedula: '32298644' },
+    { name: 'Juan Gabriel Salinas', email: 'juangasalinas@gmail.com', cedula: '80110031' },
+    { name: 'Juan carlos borja', email: 'juancarlos.borja@hotmail.com', cedula: '73182970' },
+    { name: 'Alison Catherine López Garcia', email: 'alisonlopez1@hotmail.com', cedula: '1130632543' },
+    { name: 'Daniel Alejandro Montoya Castaño', email: 'damontoya.otorrino@gmail.com', cedula: '1088303633' },
+    { name: 'Anamaria Salamanca Guerrero', email: 'anamariasalamanca02@gmail.com', cedula: '1098768019' },
+    { name: 'Alejandro Jose Banegas', email: 'ajbanegas94@gmail.com', cedula: 'F837480' },
+    { name: 'Ladislao Higuera arends', email: 'drladislaohiguera@gmail.com', cedula: '24303138' },
+    { name: 'Naynel Milano', email: 'dramilanonaynel08@gmail.com', cedula: '18264692' },
+    { name: 'Guillermina Tizi', email: 'draguillerminatizi@gmail.com', cedula: '8216597' },
+    { name: 'Dayana Silva Escobar', email: 'comercial2@dme.com.co', cedula: '1006423909' },
+    { name: 'Adriana Giraldo', email: 'agm0719@gmail.com', cedula: '1152187944' },
+    { name: 'Cesar Edwin Martínez Correa', email: 'cesarmartinezcorrea@yahoo.com', cedula: '93381089' },
+    { name: 'Andrés González Gonzalez', email: 'andres_felipe_gr@hotmail.com', cedula: '14702748' },
+    { name: 'Mario Rafael Osorio Ospina', email: 'mariorafael1228@hotmail.com', cedula: '9295792' },
+    { name: 'Roy Acosta Valerín', email: 'dracostaorl@gmail.com', cedula: '205150497' },
+    { name: 'Gustavo Urzola', email: 'inggustavourzola@gmail.com', cedula: '1020723270' },
+    { name: 'JUAN CARLOS PEÑA NARANJO', email: 'drjuancarlosotorrino@gmail.com', cedula: '80194959' },
+    { name: 'FREDY DARIO ORTIZ ORTIZ', email: 'drfredyortiz@gmail.com', cedula: '87061171' },
+    { name: 'DAMIAN AZTALA', email: 'damianeztala@gmail.com', cedula: '34324140' },
+    { name: 'Juliana Aguirre', email: 'drajulianaaguirre@outlook.com', cedula: '1088246869' },
+    { name: 'Dra. Katherine Mora', email: 'katherinemoraorl@gmail.com', cedula: '1016056100' },
+    { name: 'CLAUDIA PATRICIA GARCIA GIRALDO', email: 'consultoriocer@hotmail.com', cedula: '43557582' },
+    { name: 'JUAN FERNANDO GÓMEZ LOPERA', email: 'jfgomezotorrino@gmail.com', cedula: '3349695' },
+    { name: 'Yorban O Bolanos G', email: 'yorban.otorrino@gmail.com', cedula: '1040181272' },
+    { name: 'Daniel Ruíz Manco', email: 'danielruizmanco@gmail.com', cedula: '1010218013' },
+    { name: 'DIEGO FERNANDO SUESCUN GOMEZ', email: 'diegosuescun@yahoo.es', cedula: '86062353' },
+    { name: 'Amalia Botero', email: 'amalia.botero@hotmail.com', cedula: '39167677' },
+    { name: 'GERMAN BERNAL', email: 'dr.germanbernal@gmail.com', cedula: '80926179' },
+    { name: 'LEON FELIPE ZAPATA GIRALDO', email: 'leonfelipezapatag@gmail.com', cedula: '1128479450' },
+    { name: 'ANTONIETA GOMEZ', email: 'antonietagomez83@gmail.com', cedula: '1020823714' },
+    { name: 'FRANCISCO JAVIER FRANCO GONZALEZ', email: 'fcofdr@gmail.com', cedula: 'G28542944' },
+    { name: 'Giovanny Linares Carreon', email: 'tathianadelrocio@gmail.com', cedula: '29470841' },
+    { name: 'julissa micaela quispe', email: 'jmicaelaql@gmail.com', cedula: '48266447' },
+    { name: 'Minor Valverde Madriz', email: 'gerencia@rinofacecr.com', cedula: '112610566' },
+    { name: 'FABIO ALEJANDRO MOTTA CORTES', email: 'dr_mottac@hotmail.com', cedula: '80041841' },
+    { name: 'XIOMARA CORREA JIMENEZ', email: 'xiomaracorreajimenez@hotmail.com', cedula: '43588097' },
+    { name: 'LILIANA VITERY', email: 'dravitery@hotmail.com', cedula: '3208379930' },
+    { name: 'Ileana Carolina Potes', email: 'ileanacarolinap@gmail.com', cedula: '57105426' },
+    { name: 'KRISTEL ACHIO ARTAVIA', email: 'info@draachio.com', cedula: '603380181' },
+    { name: 'ALBERTO ANGULO', email: 'albertoangulo118@gmail.com', cedula: '84086919' },
+    { name: 'DIANA GUTIERREZ', email: 'dianacgd.dcgd@gmail.com', cedula: '176774794' },
+    { name: 'GUZMAN PARRA LINARES', email: 'guzman1932@gmail.com', cedula: '16655771' },
+    { name: 'ROSANGELA MARIA MONCADA ORDUÑO', email: 'rosangelamoncada26@gmail.com', cedula: '183204866' },
+    { name: 'VANESSA DEL CARMEN COLINA', email: 'dravanessacolina279@gmail.com', cedula: '7863082' },
+    { name: 'PAULA ANDREA JARAMILLO CUARTAS', email: 'panjacu@hotmail.com', cedula: '43155936' },
+    { name: 'Jhonny Alexander Ortiz', email: 'drortiz.orl@gmail.com', cedula: '1085307846' },
+    { name: 'Jonathan Rozenboim Matiz', email: 'jrozenboim@gmail.com', cedula: '72285786' },
+    { name: 'Betsy Patricia Pareja Ibarra', email: 'paty.pareja@gmail.com', cedula: '52646358' },
+    { name: 'Jose Gregorio Colina', email: 'grupojcolina@gmail.com', cedula: '178662532' },
+    { name: 'Visnelia Alexandra Martínez Rivas', email: 'visneliam@gmail.com', cedula: '180950656' },
+    { name: 'HUGO HENANDO BELTRAN BONILLA', email: 'hugobeltranb@hotmail.com', cedula: '79999975' },
+    { name: 'FREDDY NAVARRO NIÑO', email: 'freddysoad@hotmail.com', cedula: '1090375249' },
+    { name: 'FABIAN HENAO', email: 'dr.fabianhenao1@gmail.com', cedula: '1061693647' },
+    { name: 'DANY XIMENA GAMEZ', email: 'dannyximenagamez@hotmail.com', cedula: '1112464957' },
+    { name: 'PAOLA VALLEJO SIERRA', email: 'doc.paolavallejos@gmail.com', cedula: '43608897' },
+    { name: 'Manuel Piza', email: 'drpiza@medicos.cr', cedula: '204810880' },
+    { name: 'Erika Gutierrez', email: 'erika.gu.ro@gmail.com', cedula: '52957646' },
+    { name: 'LILIANA GUTIERREZ', email: 'liliguvi1967@gmail.com', cedula: '43894675' },
+    { name: 'Boris Luis Martinez Arellano', email: 'martinezboris.1125@gmail.com', cedula: '73194043' },
+    { name: 'Alexander Yesid Lujan Mendoza', email: 'alexander_lujan@hotmail.com', cedula: '1122396761' },
+    { name: 'Victor Hugo Villacis Basante', email: 'drvictorvillacisb@gmail.com', cedula: '1085269782' },
+    { name: 'Flor de Maria Romero Reyes', email: 'draromeroreyes@yahoo.com', cedula: 'C 01087798' },
+    { name: 'José Manuel Salvatierra Gonzales', email: 'j.salvatierra@hotmail.es', cedula: '123776818' },
+    { name: 'Carolina Casallas', email: 'karocasallas@hotmail.com', cedula: '52858996' },
+    { name: 'MELANIE LISSETH Quispe garces', email: 'quispegarcesmelanie@gmail.com', cedula: '46290598' }
+  ];
+
+  // Deduplicate by email, hash each user's cedula as their password
+  const uniqueRoster = Array.from(
+    new Map(
+      assistantRoster.map((a) => [a.email.toLowerCase(), a])
+    ).values()
+  );
+
+  const assistantUsers = await Promise.all(
+    uniqueRoster.map(async (a) => ({
+      name: a.name.trim(),
+      email: a.email.trim().toLowerCase(),
+      passwordHash: await hashPassword(a.cedula),
+      role: 'ASSISTANT' as const
+    }))
+  );
+
   const adminUser = await prisma.user.create({
     data: {
       name: 'Reviewer Admin',
@@ -37,6 +134,11 @@ async function main() {
       passwordHash: attendeePassword,
       role: 'ASSISTANT'
     }
+  });
+
+  await prisma.user.createMany({
+    data: assistantUsers,
+    skipDuplicates: true
   });
 
   await prisma.eventInfo.create({
