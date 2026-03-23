@@ -17,6 +17,8 @@ import { statisticsRouter } from './routes/statistics.js';
 import { adminRouter } from './routes/admin.js';
 import { errorHandler } from './middleware/error.js';
 export const app = express();
+// Trust Railway's reverse proxy so express-rate-limit works correctly
+app.set('trust proxy', 1);
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
