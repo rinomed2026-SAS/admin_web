@@ -104,10 +104,12 @@ certificateRouter.get('/', requireAuth, async (req: AuthRequest, res, next) => {
     page.drawRectangle({ x: 194, y: 218, width: 454, height: 38, color: rgb(0.93, 0.96, 0.99), borderWidth: 1, borderColor: rgb(0.75, 0.82, 0.9) });
     drawCentered(`Intensidad académica: ${academicHours}`, 231, 13, fontBold, rgb(0.09, 0.22, 0.38));
 
-    page.drawLine({ start: { x: 120, y: 120 }, end: { x: 330, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
-    page.drawLine({ start: { x: 512, y: 120 }, end: { x: 722, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
-    page.drawText('Dirección Académica', { x: 165, y: 104, size: 11, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
-    page.drawText('Comité Científico', { x: 573, y: 104, size: 11, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
+    page.drawLine({ start: { x: 105, y: 120 }, end: { x: 350, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
+    page.drawLine({ start: { x: 492, y: 120 }, end: { x: 737, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
+    page.drawText('Dr. Carlos Andrés Urzola Mosquera', { x: 128, y: 102, size: 11, font: fontBold, color: rgb(0.17, 0.21, 0.28) });
+    page.drawText('Director Científico · Comité Científico', { x: 124, y: 88, size: 10, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
+    page.drawText('Dr. Guillermo Arturo Landínez Cepeda', { x: 512, y: 102, size: 11, font: fontBold, color: rgb(0.17, 0.21, 0.28) });
+    page.drawText('Director · Comité Científico', { x: 555, y: 88, size: 10, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
 
     page.drawText(`Fecha de emisión: ${issueDate}`, { x: 58, y: 58, size: 10, font: fontRegular, color: rgb(0.36, 0.4, 0.47) });
     page.drawText(`Código de validación: ${validationCode}`, { x: 58, y: 42, size: 10, font: fontRegular, color: rgb(0.24, 0.28, 0.35) });

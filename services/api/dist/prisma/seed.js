@@ -128,35 +128,35 @@ async function main() {
     await prisma.eventInfo.create({
         data: {
             id: 1,
-            name: 'RINOMED 2026 – Curso Internacional de Rinoplastia y Cirugía Plástica Facial',
+            name: 'RINOMED 2026 – Congreso Internacional de Rinoplastia y Cirugía Plástica Facial',
             city: 'Medellín',
             dates: '17–18 de abril de 2026',
-            venue: 'Medellín, Colombia',
-            address: 'Medellín, Colombia',
+            venue: 'Centro de Eventos El Tesoro',
+            address: 'Carrera 25A # 1A Sur - 45, Piso 5, Medellín, Colombia',
             email: 'info@rinomed2026.com',
-            phone: '+57 604 0000000',
-            whatsapp: '+57 300 0000000',
-            website: 'https://rinomed2026.com',
-            mapsUrl: 'https://maps.google.com/?q=Medellin+Colombia',
+            phone: '+57 320 6345757',
+            whatsapp: '+57 320 6345757',
+            website: 'https://rinomedellin.com/',
+            mapsUrl: 'https://www.google.com/maps/place/Centro+De+Eventos+El+Tesoro/@6.196285,-75.5628239,17z/data=!3m1!4b1!4m6!3m5!1s0x8e4682906e7b0067:0x6f1e53ea97735cb7!8m2!3d6.1962797!4d-75.560249!16s%2Fg%2F11bztz1jl0?entry=ttu',
             academicHours: '20 horas académicas'
         }
     });
     // ── SPEAKERS ────────────────────────────────────────────────────────────────
     const [froilan, neves, moreraE, herreraN, romeroG, roseroF, pedrozaC, ortegaS, bedoyaJD, molanoJ, velezS, vanegas, landinez, urzola, munozS, yepesA] = await Promise.all([
-        prisma.speaker.create({ data: { name: 'Dr. Froilan Páez', country: 'Venezuela', specialty: 'Rinoplastia', bio: 'Experto en preservación dorsal y técnicas de punta nasal.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. José Carlos Neves', country: 'Portugal', specialty: 'Rinoplastia de preservación', bio: 'Creador del Concepto Tetris y técnicas de DAL Split.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Eduardo Morera', country: 'España', specialty: 'Rinoplastia avanzada', bio: 'Desarrollador de la técnica SPQR+ para laterorrinias y estrategia Rock Star.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Noé Herrera', country: 'México', specialty: 'Rinoplastia en piel gruesa', bio: 'Especialista en colgajos de filtrum y reconstrucción con abordaje cerrado.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Gustavo Romero', country: 'Colombia', specialty: 'Rinoplastia', bio: 'Experto en piel gruesa, LEGO Concept y control columelar.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Francisco Rosero', country: 'Colombia', specialty: 'Reconstrucción nasal', bio: 'Especialista en técnicas controversiales de reconstrucción nasal difícil.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Carlos Pedroza', country: 'Colombia', specialty: 'Cirugía de base nasal', bio: 'Referente en cirugía de base nasal segura y efectiva.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dra. Sandra Ortega', country: 'Colombia', specialty: 'Tecnologías en rinoplastia', bio: 'Experta en innovación tecnológica y manejo de complicaciones.', photoUrl: 'https://placehold.co/300x300' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Froilan Páez', country: 'Venezuela', specialty: 'Rinoplastia estructural y cirugía nasal funcional', bio: 'Otorrinolaringólogo y cirujano plástico facial. Especialista en rinoplastia estructural primaria y secundaria, cirugía nasal funcional y estética. Médico cirujano egresado de la Universidad Central de Venezuela, con formación en el Hospital San Juan de Dios de Caracas, miembro de la Sociedad Venezolana de Rinología y de The Rhinoplasty Society. Más de 10 años de experiencia, práctica en Caracas, consultas en Bogotá y EE.UU., y conferencista internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDr_Froilan_Paez.jpg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/froilanpaez/?hl=es' } }),
+        prisma.speaker.create({ data: { name: 'Dr. José Carlos Neves', country: 'Portugal', specialty: 'Rinoplastia de preservación y rejuvenecimiento facial', bio: 'Otorrinolaringólogo y cirujano plástico facial con dedicación exclusiva a rinoplastia, lifting facial y rejuvenecimiento periorbital. Formado en Otorrinolaringología y Cirugía Cervicofacial en Coimbra, con fellowship en cirugía plástica facial de EAFPS. Board Certified EBCFPRS / IBCFPRS e IFFPSS, fundador y director clínico de MYFACE Clinic en Lisboa y Coimbra, presidente de la European Academy of Facial Plastic Surgery y conferencista internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FJOSE_CARLOS_NEVES.png&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/josecarlosmartinsneves' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Eduardo Morera', country: 'España', specialty: 'Rinología avanzada y cirugía facial', bio: 'Otorrinolaringólogo y cirujano plástico facial. Licenciado en Medicina por la Universidad Autónoma de Madrid y especialista vía MIR en el Hospital La Paz. Trabaja en el Hospital Universitario Son Espases y Clínica Juaneda en Palma de Mallorca. Doctor PhD por UCAM, certificado europeo EBE-ORLHNS y BCFPRS, presidente de la Sociedad Española de Cirugía Plástica Facial y conferencista internacional con más de 20 años de experiencia.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FEDUARDO_MORERA_SERNA.png&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/eduardomoreraserna' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Noé Herrera', country: 'México', specialty: 'Rinoplastia estética, funcional y reconstructiva', bio: 'Otorrinolaringólogo y cirujano plástico facial. Especialista en rinoplastia estética, funcional, reconstructiva y revisional, con énfasis en técnica ultrasónica y creador de la técnica L grafts. Certificado por el Consejo Mexicano de Otorrinolaringología y Cirugía de Cabeza y Cuello, formación UNAM y fellowship en rinoplastia ultrasónica. Miembro de la Sociedad Mexicana de Rinología y Cirugía Plástica Facial, práctica en Ciudad de México y conferencista internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDR_NOE_HERRERA.jpeg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/drnoeherreraoficial/' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Gustavo Romero', country: 'Colombia', specialty: 'Rinoplastia ultrasónica e híbrida', bio: 'Otorrinolaringólogo y cirujano plástico facial. Especialista en rinoplastia ultrasónica e híbrida, con más de 14 años de experiencia. Presidente de la Asociación Colombiana de Otorrinolaringología (ACORL), miembro de EAFPS e IFFPSS, con práctica privada en Santa Marta y Barranquilla y trayectoria como conferencista nacional e internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FGustavo_Romero.jpeg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/drgustavoromero' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Francisco Rosero', country: 'Colombia', specialty: 'Rinoplastia reconstructiva y de preservación', bio: 'Otorrinolaringólogo y cirujano plástico facial. Especialista en rinoplastia primaria, reconstructiva y de preservación, egresado de la Universidad CES. Práctica en Pereira, fundador de Caritess Medicina Estética, con experiencia en cirugía nasal estética y funcional, bichectomía y rejuvenecimiento facial. Conferencista nacional e internacional con enfoque exclusivo en cirugía de la nariz.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDR_FRANCISCO_ROSERO.jpeg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/drfranciscorosero' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Carlos Pedroza', country: 'Colombia', specialty: 'Rinoplastia, blefaroplastia y rejuvenecimiento facial', bio: 'Otorrinolaringólogo y cirujano plástico facial, formado en la Pontificia Universidad Javeriana y con fellowship en Mass Eye and Ear Infirmary de Harvard Medical School. Más de 25 años de experiencia, board certified en cirugía plástica facial (IFFPSS), ex presidente de la Sociedad Colombiana de Cirugía Plástica Facial y Rinología, práctica privada en Clínica Imbanaco y conferencista internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDR_CARLOS_PEDROZA.jpg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/dr.carlospedroza' } }),
+        prisma.speaker.create({ data: { name: 'Dra. Sandra Ortega', country: 'Colombia', specialty: 'Cirugía plástica facial y rinoplastia', bio: 'Cirujana plástica, estética y reconstructiva. Médica egresada de la Universidad del Rosario y especialista en Cirugía Plástica por la Universidad Militar Nueva Granada. Miembro de la Sociedad Colombiana de Cirugía Plástica (SCCP), experta en rinoplastia, cirugía facial y corporal, con práctica privada en Bogotá y trayectoria como conferencista internacional.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDRA_SANDRA_ORTEGA.jpeg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/sandraortegamd' } }),
         prisma.speaker.create({ data: { name: 'Dr. Juan David Bedoya', country: 'Colombia', specialty: 'Otorrinolaringología', bio: 'Especialista en poliposis nasal y rinoplastia con patología asociada.', photoUrl: 'https://placehold.co/300x300' } }),
         prisma.speaker.create({ data: { name: 'Dr. Julián Molano', country: 'Colombia', specialty: 'Otorrinolaringología', bio: 'Panelista en manejo de rinoplastia con poliposis nasal.', photoUrl: 'https://placehold.co/300x300' } }),
         prisma.speaker.create({ data: { name: 'Dra. Sara Vélez', country: 'Colombia', specialty: 'Cirugía Plástica Facial', bio: 'Moderadora y asistente quirúrgica en cirugías en vivo.', photoUrl: 'https://placehold.co/300x300' } }),
         prisma.speaker.create({ data: { name: 'Dra. Nataly Vanegas', country: 'Colombia', specialty: 'Cirugía Plástica Facial', bio: 'Asistente quirúrgica en cirugías en vivo y moderadora.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Guillermo Landínez', country: 'Colombia', specialty: 'Cirugía Plástica Facial', bio: 'Co-director de RINOMED 2026 y moderador del evento.', photoUrl: 'https://placehold.co/300x300' } }),
-        prisma.speaker.create({ data: { name: 'Dr. Carlos Urzola', country: 'Colombia', specialty: 'Cirugía Plástica Facial', bio: 'Co-director de RINOMED 2026 y moderador del evento.', photoUrl: 'https://placehold.co/300x300' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Guillermo Landínez', country: 'Colombia', specialty: 'Rinoplastia primaria, estructural y reconstructiva', bio: 'Otorrinolaringólogo y cirujano plástico facial. Especialista en rinoplastia primaria, estructural, reconstructiva y funcional. Egresado de la Universidad Nacional de Colombia, con formación avanzada en España, Estados Unidos y Colombia, práctica privada en Medellín y más de 15 años de experiencia. Miembro de Facialis Academy y de la SCCPFR, profesor universitario y referente en equilibrio funcional-estético.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FGUILLERMO_LANDINEZ.jpg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/dr.guillermolandinez' } }),
+        prisma.speaker.create({ data: { name: 'Dr. Carlos Urzola', country: 'Colombia', specialty: 'Rinología avanzada y cirugía plástica facial', bio: 'Otorrinolaringólogo con dedicación exclusiva en rinología, cirugía plástica facial y medicina del sueño. Especialista en rinoplastia funcional, estética, estructural y reconstructiva, somnólogo certificado ACMES y fellow en cirugía plástica facial (2023–2024). Desarrolla su práctica en Medellín y lidera como director científico una propuesta académica de alto nivel para RINOMED 2026.', photoUrl: 'https://rinomedellin.com/_next/image?url=%2Fconferencistas%2FDr_Carlos_Andres_Urzola_Mosquera.jpg&w=640&q=75', websiteUrl: '', instagramUrl: 'https://www.instagram.com/carlosurzolacirujanodenariz' } }),
         prisma.speaker.create({ data: { name: 'Dr. Samuel Muñoz', country: 'Colombia', specialty: 'Cirugía Plástica Facial', bio: 'Conferencista en experiencia sensorial – Desayuno con diamantes.', photoUrl: 'https://placehold.co/300x300' } }),
         prisma.speaker.create({ data: { name: 'Alejandro Yepes', country: 'Colombia', specialty: 'Marketing y Tecnología', bio: 'Especialista en marketing, redes sociales e IA en cirugía plástica. Cromia.', photoUrl: 'https://placehold.co/300x300' } })
     ]);
@@ -290,15 +290,33 @@ async function main() {
             data: { day: day2, startTime: '16:00', endTime: '16:30', room: 'Auditorio', title: 'DAL Split and Step-Up Manoeuvres', topic: 'Rinoplastia – DAL', level: 'Avanzado', description: 'Técnicas DAL Split y Step-Up Manoeuvres.' },
             speakers: [neves.id]
         },
-        // MASTER CLASS FINAL
         {
-            data: { day: day2, startTime: '16:30', endTime: '17:30', room: 'Auditorio', title: 'MASTER CLASS – Perlas en reconstrucción nasal: casos reales', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Casos reales presentados por: Dr. Eduardo Morera (16:30), Dr. Francisco Rosero (16:40), Dr. Noé Herrera (16:50), Dr. Carlos Pedroza (17:00), Dr. Froilan Páez (17:10), Dr. Gustavo Romero (17:20).' },
-            speakers: [moreraE.id, roseroF.id, herreraN.id, pedrozaC.id, froilan.id, romeroG.id]
+            data: { day: day2, startTime: '16:30', endTime: '16:40', room: 'Auditorio', title: 'MASTER CLASS – Perlas en reconstrucción nasal: casos reales', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Bloque de master class con casos reales de reconstrucción nasal.' },
+            speakers: [moreraE.id]
         },
-        // MESA REDONDA FINAL
         {
-            data: { day: day2, startTime: '17:30', endTime: '18:30', room: 'Auditorio', title: 'Mesa redonda final – Temas controversiales en rinoplastia', topic: 'Mesa redonda', level: 'Avanzado', description: 'Temas: manejo del paciente difícil, complicaciones en redes sociales, piel gruesa o fibrograsa, perforación septal concomitante, nariz post-filler, camuflaje en piel fina.' },
-            speakers: [froilan.id, neves.id, moreraE.id, herreraN.id, romeroG.id, roseroF.id, pedrozaC.id, ortegaS.id]
+            data: { day: day2, startTime: '16:40', endTime: '16:50', room: 'Auditorio', title: 'Perlas en reconstrucción nasal', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Caso real presentado por Dr. Francisco Rosero (Colombia).' },
+            speakers: [roseroF.id]
+        },
+        {
+            data: { day: day2, startTime: '16:50', endTime: '17:00', room: 'Auditorio', title: 'Perlas en reconstrucción nasal', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Caso real presentado por Dr. Noé Herrera (México).' },
+            speakers: [herreraN.id]
+        },
+        {
+            data: { day: day2, startTime: '17:00', endTime: '17:10', room: 'Auditorio', title: 'Perlas en reconstrucción nasal', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Caso real presentado por Dr. Carlos Pedroza (Colombia).' },
+            speakers: [pedrozaC.id]
+        },
+        {
+            data: { day: day2, startTime: '17:10', endTime: '17:20', room: 'Auditorio', title: 'Perlas en reconstrucción nasal', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Caso real presentado por Dr. Froilan Páez (Venezuela).' },
+            speakers: [froilan.id]
+        },
+        {
+            data: { day: day2, startTime: '17:20', endTime: '17:30', room: 'Auditorio', title: 'Perlas en reconstrucción nasal', topic: 'Reconstrucción nasal', level: 'Avanzado', description: 'Caso real presentado por Dr. Gustavo Romero (Colombia).' },
+            speakers: [romeroG.id]
+        },
+        {
+            data: { day: day2, startTime: '17:30', endTime: '18:30', room: 'Auditorio', title: 'Mesa redonda final – Temas controversiales en rinoplastia', topic: 'Mesa redonda', level: 'Avanzado', description: 'Temas: manejo del paciente difícil y de alto riesgo; complicaciones en redes sociales: transparencia, reputación y manejo de críticas; piel gruesa o fibrograsa: debulking, nanofat, PRP, corticoides intralesionales o aceptar límites estéticos; perforación septal concomitante: reparación simultánea o secuencial; nariz post-filler (HA, CaHA, PMMA): tiempos de espera, disolución y evaluación ecográfica; camuflaje en piel fina.' },
+            speakers: []
         },
         // CLAUSURA
         {
@@ -306,7 +324,7 @@ async function main() {
             speakers: [urzola.id, landinez.id]
         },
         {
-            data: { day: day2, startTime: '20:00', endTime: '23:59', room: 'Evento social', title: 'Evento de clausura RINOMED 2026', topic: 'Evento social', level: 'General', description: 'Evento social de cierre del congreso. Actividad con inscripción adicional.' },
+            data: { day: day2, startTime: '20:00', endTime: '20:00', room: 'Evento social', title: 'Evento de clausura RINOMED 2026', topic: 'Evento social', level: 'General', description: 'Actividad social del congreso. Evento con inscripción adicional.' },
             speakers: []
         }
     ];
@@ -319,25 +337,44 @@ async function main() {
     await prisma.sponsor.createMany({
         data: [
             {
-                name: 'MedTech Solutions',
-                tier: 'Gold',
-                description: 'Dispositivos de alta precisión para ORL.',
-                websiteUrl: 'https://example.com/medtech',
-                products: 'Endoscopios, instrumental quirúrgico'
+                name: 'AAORL',
+                tier: 'Aliado',
+                logoUrl: 'https://rinomedellin.com/_next/image?url=%2Fpatrocinadores%2FLogoAAORL.png&w=384&q=75',
+                description: 'Aliado oficial visible en la web de RINOMED 2026.',
+                websiteUrl: '',
+                products: 'Apoyo institucional'
             },
             {
-                name: 'BioRino Labs',
-                tier: 'Bronze',
-                description: 'Innovación en tratamientos de rinitis.',
-                websiteUrl: 'https://example.com/biorino',
-                products: 'Sprays y terapias tópicas'
+                name: 'Asorlat',
+                tier: 'Aliado',
+                logoUrl: 'https://rinomedellin.com/_next/image?url=%2Fpatrocinadores%2FlogoAsorlat.png&w=384&q=75',
+                description: 'Aliado oficial visible en la web de RINOMED 2026.',
+                websiteUrl: '',
+                products: 'Apoyo institucional'
             },
             {
-                name: 'AudiaCare',
-                tier: 'Bronze',
-                description: 'Soluciones auditivas y diagnóstico.',
-                websiteUrl: 'https://example.com/audiacare',
-                products: 'Audífonos y diagnósticos'
+                name: 'GSK',
+                tier: 'Patrocinador',
+                logoUrl: '',
+                description: 'Patrocinador del simposio de almuerzo del Día 1.',
+                websiteUrl: '',
+                products: 'Simposio académico'
+            },
+            {
+                name: 'Sanofi Aventis',
+                tier: 'Patrocinador',
+                logoUrl: '',
+                description: 'Patrocinador oficial del bloque “Desayuno con diamantes”.',
+                websiteUrl: '',
+                products: 'Patrocinio académico'
+            },
+            {
+                name: 'GlobalTee',
+                tier: 'Patrocinador',
+                logoUrl: '',
+                description: 'Patrocinador de la demostración de blefaroplastia no quirúrgica.',
+                websiteUrl: '',
+                products: 'Patrocinio académico'
             }
         ]
     });
