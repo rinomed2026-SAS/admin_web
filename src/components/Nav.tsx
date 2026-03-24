@@ -11,7 +11,8 @@ const navItems = [
   { path: '/event-info', label: 'Info Evento', icon: 'ℹ️' },
   { path: '/questions', label: 'Q&A', icon: '💬' },
   { path: '/leads', label: 'Leads', icon: '✉️' },
-  { path: '/users', label: 'Usuarios', icon: '👤' }
+  { path: '/users', label: 'Usuarios', icon: '👤' },
+  { path: '/community', label: 'Comunidad', icon: '💜' }
 ];
 
 export function Nav() {

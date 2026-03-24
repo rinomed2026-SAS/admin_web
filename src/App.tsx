@@ -8,6 +8,7 @@ import { EventInfo } from './pages/EventInfo';
 import { Questions } from './pages/Questions';
 import { Leads } from './pages/Leads';
 import { Users } from './pages/Users';
+import { Community } from './pages/Community';
 import { NotFound } from './pages/NotFound';
 import './App.css';
 
@@ -105,6 +106,14 @@ function App() {
           element={
             <ProtectedLayout>
               <Users />
+            </ProtectedLayout>
+          }
+        />
+        <Route
+          path="/community"
+          element={
+            <ProtectedLayout>
+              <Community />
             </ProtectedLayout>
           }
         />

@@ -15,6 +15,7 @@ import { infoRouter } from './routes/info.js';
 import { certificateRouter } from './routes/certificate.js';
 import { statisticsRouter } from './routes/statistics.js';
 import { adminRouter } from './routes/admin.js';
+import { communityRouter } from './routes/community.js';
 import { errorHandler } from './middleware/error.js';
 export const app = express();
 // Trust Railway's reverse proxy so express-rate-limit works correctly
@@ -51,4 +52,5 @@ app.use('/v1', infoRouter);
 app.use('/v1/certificate', certificateRouter);
 app.use('/v1/statistics', statisticsRouter);
 app.use('/v1/admin', adminRouter);
+app.use('/v1/community', communityRouter);
 app.use(errorHandler);
