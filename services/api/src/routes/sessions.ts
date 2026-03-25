@@ -43,7 +43,7 @@ sessionsRouter.get('/', optionalAuth, async (req: OptionalAuthRequest, res, next
       ...session,
       isFavorite: req.user ? favoritesSet.has(session.id) : false
     }));
-    return res.json({ data, page, limit });
+    return res.json({ data, page, limit, total: data.length });
   } catch (error) {
     return next(error);
   }
