@@ -20,6 +20,7 @@ import { errorHandler } from './middleware/error.js';
 export const app = express();
 // Trust Railway's reverse proxy so express-rate-limit works correctly
 app.set('trust proxy', 1);
+// v2 – community + sessions pagination fix
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
