@@ -16,6 +16,7 @@ import { certificateRouter } from './routes/certificate.js';
 import { statisticsRouter } from './routes/statistics.js';
 import { adminRouter } from './routes/admin.js';
 import { communityRouter } from './routes/community.js';
+import { surveyRouter } from './routes/survey.js';
 import { errorHandler } from './middleware/error.js';
 
 export const app = express();
@@ -60,5 +61,6 @@ app.use('/v1/certificate', certificateRouter);
 app.use('/v1/statistics', statisticsRouter);
 app.use('/v1/admin', adminRouter);
 app.use('/v1/community', communityRouter);
+app.use('/v1/survey', surveyRouter);
 
 app.use(errorHandler);

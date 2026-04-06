@@ -7,7 +7,11 @@ export const config = {
     jwtAccessTtlMinutes: Number(process.env.JWT_ACCESS_TTL_MINUTES ?? 15),
     jwtRefreshTtlDays: Number(process.env.JWT_REFRESH_TTL_DAYS ?? 30),
     corsOrigin: process.env.CORS_ORIGIN
-        ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
-        : ['http://localhost:5173', 'http://localhost:8100'],
+        ? [
+            ...process.env.CORS_ORIGIN.split(',').map((o) => o.trim()),
+            'capacitor://localhost',
+            'http://localhost',
+        ]
+        : ['http://localhost:5173', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost'],
     appUrl: process.env.APP_URL ?? 'http://localhost:8100'
 };

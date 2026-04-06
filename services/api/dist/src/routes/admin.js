@@ -293,13 +293,26 @@ adminRouter.get('/questions/export.csv', async (_req, res, next) => {
 adminRouter.get('/questions', async (_req, res, next) => {
     try {
         const questions = await prisma.question.findMany({
-            include: {
+            select: {
+                id: true,
+                text: true,
+                anonymous: true,
+                createdAt: true,
                 user: { select: { id: true, name: true, email: true } },
                 session: { select: { id: true, title: true, day: true, startTime: true } }
             },
             orderBy: { createdAt: 'desc' }
         });
         res.json({ data: questions });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+adminRouter.delete('/questions/:id', async (req, res, next) => {
+    try {
+        await prisma.question.delete({ where: { id: req.params.id } });
+        res.json({ message: 'Question deleted' });
     }
     catch (error) {
         next(error);
@@ -379,6 +392,35 @@ adminRouter.delete('/users/:id', async (req, res, next) => {
     try {
         await prisma.user.delete({ where: { id: req.params.id } });
         res.json({ message: 'User deleted' });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+// GET /v1/admin/stats – estadísticas del dashboard
+adminRouter.get('/stats', async (_req, res, next) => {
+    try {
+        const [usersCount, sessionsCount, questionsCount, leadsCount, surveysCount, communityCount, speakersCount, sponsorsCount] = await Promise.all([
+            prisma.user.count(),
+            prisma.session.count(),
+            prisma.question.count(),
+            prisma.sponsorLead.count(),
+            prisma.surveyResponse.count(),
+            prisma.communitySubmission.count(),
+            prisma.speaker.count(),
+            prisma.sponsor.count()
+        ]);
+        const stats = {
+            users: usersCount,
+            sessions: sessionsCount,
+            questions: questionsCount,
+            leads: leadsCount,
+            surveys: surveysCount,
+            community: communityCount,
+            speakers: speakersCount,
+            sponsors: sponsorsCount
+        };
+        res.json({ data: stats });
     }
     catch (error) {
         next(error);

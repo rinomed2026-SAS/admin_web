@@ -1,129 +1,218 @@
 import { Router } from 'express';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import QRCode from 'qrcode';
-import sharp from 'sharp';
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, type AuthRequest } from '../middleware/auth.js';
 
 export const certificateRouter = Router();
 
-async function loadAdminBackgroundAsPng(): Promise<Buffer | null> {
-  const candidates = [
-    path.resolve(process.cwd(), '..', '..', 'public', 'logo-rinomed.svg'),
-    path.resolve(process.cwd(), 'public', 'logo-rinomed.svg')
-  ];
+// Configuración de roles y colores
+const roleConfig = {
+  ASSISTANT: { title: 'Asistente', subtitle: 'asistente', hours: '20', color: { r: 0.2, g: 0.6, b: 0.9 } },
+  PROFESSOR: { title: 'Docente', subtitle: 'docente', hours: '20', color: { r: 0.1, g: 0.7, b: 0.3 } },
+  STAFF: { title: 'Personal Staff', subtitle: 'personal de apoyo', hours: '40', color: { r: 0.9, g: 0.5, b: 0.1 } },
+  ADMIN: { title: 'Organizador', subtitle: 'organizador', hours: '60', color: { r: 0.8, g: 0.2, b: 0.3 } }
+};
 
-  for (const candidate of candidates) {
-    try {
-      const svgBuffer = await readFile(candidate);
-      const pngBuffer = await sharp(svgBuffer)
-        .png({ quality: 100 })
-        .resize({ width: 1400, fit: 'inside', withoutEnlargement: false })
-        .toBuffer();
-      return pngBuffer;
-    } catch {
-      continue;
-    }
-  }
-
-  return null;
-}
-
+// GET /v1/certificate – devuelve metadata JSON del certificado
 certificateRouter.get('/', requireAuth, async (req: AuthRequest, res, next) => {
   try {
     const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
     if (!user) return res.status(404).json({ message: 'User not found' });
+    
     const eventInfo = await prisma.eventInfo.findFirst();
     const validationCode = `RINO-${user.id.slice(0, 8).toUpperCase()}`;
+    const config = roleConfig[user.role];
+    
+    const certificate = {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      },
+      event: {
+        name: eventInfo?.name ?? 'RINOMED 2026',
+        city: eventInfo?.city ?? 'Medellín, Colombia',
+        dates: eventInfo?.dates ?? '17–18 de abril de 2026',
+        academicHours: config.hours + ' horas académicas'
+      },
+      certificate: {
+        validationCode,
+        title: config.title,
+        subtitle: config.subtitle,
+        hours: config.hours,
+        issuedAt: new Date().toISOString(),
+        validationUrl: `${process.env.APP_URL}/certificate/${validationCode}`
+      }
+    };
+
+    return res.json({ data: certificate });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+// GET /v1/certificate/pdf – genera y descarga el PDF del certificado
+certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user!.id } });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    const eventInfo = await prisma.eventInfo.findFirst();
+    const validationCode = `RINO-${user.id.slice(0, 8).toUpperCase()}`;
+    const config = roleConfig[user.role];
+    
     const eventName = eventInfo?.name ?? 'RINOMED 2026';
     const eventCity = eventInfo?.city ?? 'Medellín, Colombia';
     const eventDates = eventInfo?.dates ?? '17–18 de abril de 2026';
-    const academicHours = eventInfo?.academicHours ?? '20 horas académicas';
     const issueDate = new Date().toLocaleDateString('es-CO', {
       day: '2-digit',
       month: 'long',
       year: 'numeric'
     });
 
+    // Crear PDF en formato landscape A4
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([842, 595]);
+    const page = pdfDoc.addPage([842, 595]); // A4 landscape: 842x595 points
     const { width, height } = page.getSize();
-    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const backgroundPng = await loadAdminBackgroundAsPng();
 
-    const drawCentered = (text: string, y: number, size: number, font = fontRegular, color = rgb(0.12, 0.12, 0.12)) => {
-      const textWidth = font.widthOfTextAtSize(text, size);
-      page.drawText(text, {
-        x: (width - textWidth) / 2,
-        y,
-        size,
-        font,
-        color
-      });
-    };
+    // Fuentes
+    const titleFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const normalFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    page.drawRectangle({ x: 0, y: 0, width, height, color: rgb(0.99, 0.99, 1) });
+    // Color de acento según el rol
+    const accentColor = rgb(config.color.r, config.color.g, config.color.b);
 
-    if (backgroundPng) {
-      const bgImage = await pdfDoc.embedPng(backgroundPng);
-      const imgWidth = bgImage.width;
-      const imgHeight = bgImage.height;
-      const scale = Math.max(width / imgWidth, height / imgHeight) * 0.88;
-      const drawWidth = imgWidth * scale;
-      const drawHeight = imgHeight * scale;
-      const drawX = (width - drawWidth) / 2;
-      const drawY = (height - drawHeight) / 2;
+    // Borde decorativo
+    const borderThickness = 8;
+    page.drawRectangle({
+      x: borderThickness / 2,
+      y: borderThickness / 2,
+      width: width - borderThickness,
+      height: height - borderThickness,
+      borderColor: accentColor,
+      borderWidth: borderThickness,
+    });
 
-      page.drawImage(bgImage, {
-        x: drawX,
-        y: drawY,
-        width: drawWidth,
-        height: drawHeight,
-        opacity: 0.08
-      });
-    }
+    // Título principal del certificado
+    page.drawText('CERTIFICADO DE PARTICIPACIÓN', {
+      x: width / 2 - 200,
+      y: height - 80,
+      size: 24,
+      font: titleFont,
+      color: accentColor,
+    });
 
-    page.drawRectangle({ x: 22, y: 22, width: width - 44, height: height - 44, borderWidth: 2, borderColor: rgb(0.07, 0.27, 0.45) });
-    page.drawRectangle({ x: 32, y: 32, width: width - 64, height: height - 64, borderWidth: 1, borderColor: rgb(0.73, 0.8, 0.9) });
+    // Logo placeholder (rectángulo)
+    page.drawRectangle({
+      x: width / 2 - 40,
+      y: height - 150,
+      width: 80,
+      height: 60,
+      color: rgb(0.9, 0.9, 0.9),
+      borderColor: rgb(0.7, 0.7, 0.7),
+      borderWidth: 1,
+    });
+    page.drawText('LOGO', {
+      x: width / 2 - 15,
+      y: height - 125,
+      size: 12,
+      font: normalFont,
+      color: rgb(0.5, 0.5, 0.5),
+    });
 
-    page.drawRectangle({ x: 44, y: height - 110, width: width - 88, height: 56, color: rgb(0.07, 0.27, 0.45) });
-    drawCentered('RINOMED 2026', height - 88, 20, fontBold, rgb(1, 1, 1));
-    drawCentered('Curso Internacional de Rinoplastia y Cirugía Plástica Facial', height - 104, 11, fontRegular, rgb(0.91, 0.96, 1));
+    // Texto principal
+    page.drawText('Se certifica que', {
+      x: width / 2 - 60,
+      y: height - 200,
+      size: 16,
+      font: normalFont,
+      color: rgb(0, 0, 0),
+    });
 
-    drawCentered('CERTIFICADO DE PARTICIPACIÓN', height - 165, 29, fontBold, rgb(0.08, 0.18, 0.33));
-    drawCentered('Se certifica que', height - 205, 15, fontRegular, rgb(0.2, 0.25, 0.32));
-    drawCentered(user.name.toUpperCase(), height - 245, 26, fontBold, rgb(0.06, 0.16, 0.31));
+    // Nombre del usuario
+    page.drawText(user.name.toUpperCase(), {
+      x: width / 2 - (user.name.length * 8),
+      y: height - 240,
+      size: 28,
+      font: titleFont,
+      color: rgb(0, 0, 0),
+    });
 
-    drawCentered('participó satisfactoriamente en el evento académico', height - 282, 14, fontRegular, rgb(0.2, 0.25, 0.32));
-    drawCentered(eventName, height - 315, 15, fontBold, rgb(0.1, 0.2, 0.36));
-    drawCentered(`${eventCity} | ${eventDates}`, height - 339, 12, fontRegular, rgb(0.25, 0.31, 0.39));
+    // Texto de participación
+    const participationText = `ha participado como ${config.subtitle} con una intensidad de ${config.hours} horas`;
+    page.drawText(participationText, {
+      x: width / 2 - (participationText.length * 4),
+      y: height - 290,
+      size: 16,
+      font: normalFont,
+      color: rgb(0, 0, 0),
+    });
 
-    page.drawRectangle({ x: 194, y: 218, width: 454, height: 38, color: rgb(0.93, 0.96, 0.99), borderWidth: 1, borderColor: rgb(0.75, 0.82, 0.9) });
-    drawCentered(`Intensidad académica: ${academicHours}`, 231, 13, fontBold, rgb(0.09, 0.22, 0.38));
+    // Información del evento
+    page.drawText(`en ${eventName}`, {
+      x: width / 2 - (eventName.length * 5),
+      y: height - 320,
+      size: 18,
+      font: boldFont,
+      color: accentColor,
+    });
 
-    page.drawLine({ start: { x: 105, y: 120 }, end: { x: 350, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
-    page.drawLine({ start: { x: 492, y: 120 }, end: { x: 737, y: 120 }, thickness: 1, color: rgb(0.25, 0.3, 0.38) });
-    page.drawText('Dr. Carlos Andrés Urzola Mosquera', { x: 128, y: 102, size: 11, font: fontBold, color: rgb(0.17, 0.21, 0.28) });
-    page.drawText('Director Científico · Comité Científico', { x: 124, y: 88, size: 10, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
-    page.drawText('Dr. Guillermo Arturo Landínez Cepeda', { x: 512, y: 102, size: 11, font: fontBold, color: rgb(0.17, 0.21, 0.28) });
-    page.drawText('Director · Comité Científico', { x: 555, y: 88, size: 10, font: fontRegular, color: rgb(0.32, 0.36, 0.42) });
+    page.drawText(`${eventCity} • ${eventDates}`, {
+      x: width / 2 - 80,
+      y: height - 350,
+      size: 14,
+      font: normalFont,
+      color: rgb(0.3, 0.3, 0.3),
+    });
 
-    page.drawText(`Fecha de emisión: ${issueDate}`, { x: 58, y: 58, size: 10, font: fontRegular, color: rgb(0.36, 0.4, 0.47) });
-    page.drawText(`Código de validación: ${validationCode}`, { x: 58, y: 42, size: 10, font: fontRegular, color: rgb(0.24, 0.28, 0.35) });
+    // Fecha de emisión
+    page.drawText(`Expedido en Medellín, ${issueDate}`, {
+      x: width / 2 - 100,
+      y: height - 420,
+      size: 12,
+      font: normalFont,
+      color: rgb(0.5, 0.5, 0.5),
+    });
 
-    page.drawRectangle({ x: width - 174, y: 38, width: 116, height: 116, color: rgb(1, 1, 1), borderWidth: 1, borderColor: rgb(0.7, 0.78, 0.88) });
+    // Código QR
+    const validationUrl = `${process.env.APP_URL}/certificate/${validationCode}`;
+    const qrCodeDataUrl = await QRCode.toDataURL(validationUrl, { width: 100 });
+    const qrCodeImage = qrCodeDataUrl.replace(/^data:image\/png;base64,/, '');
+    const qrCodeBytes = Buffer.from(qrCodeImage, 'base64');
+    const qrImage = await pdfDoc.embedPng(qrCodeBytes);
 
-    const qrDataUrl = await QRCode.toDataURL(validationCode);
-    const qrImage = await pdfDoc.embedPng(qrDataUrl);
-    page.drawImage(qrImage, { x: width - 166, y: 46, width: 100, height: 100 });
-    page.drawText('Validación digital', { x: width - 160, y: 26, size: 9, font: fontRegular, color: rgb(0.36, 0.4, 0.47) });
+    page.drawImage(qrImage, {
+      x: width - 150,
+      y: 50,
+      width: 80,
+      height: 80,
+    });
 
+    // Código de validación visible
+    page.drawText('Código de validación:', {
+      x: width - 200,
+      y: 140,
+      size: 10,
+      font: normalFont,
+      color: rgb(0.5, 0.5, 0.5),
+    });
+    page.drawText(validationCode, {
+      x: width - 200,
+      y: 125,
+      size: 12,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    });
+
+    // Generar PDF
     const pdfBytes = await pdfDoc.save();
+    
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename="rinomed-certificado.pdf"');
+    res.setHeader('Content-Disposition', `attachment; filename="certificado-${user.name.replace(/\s+/g, '-')}.pdf"`);
+    
     return res.send(Buffer.from(pdfBytes));
   } catch (error) {
     return next(error);

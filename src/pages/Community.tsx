@@ -8,6 +8,7 @@ type CommunitySubmission = {
   userName: string;
   originalImageUrl: string;
   composedImageUrl: string | null;
+  appCaption: string | null;
   allowGallery: boolean;
   status: SubmissionStatus;
   createdAt: string;
@@ -68,6 +69,26 @@ export function Community() {
       setError(err instanceof Error ? err.message : 'Error al actualizar');
     } finally {
       setUpdating(null);
+    }
+  };
+
+  const deleteSubmission = async (id: string) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta submission?')) return;
+
+    try {
+      const response = await apiFetch(`/v1/community/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Error al eliminar la submission');
+      }
+      
+      // Recargar la lista después de eliminar
+      await load();
+    } catch (error) {
+      console.error('Error deleting submission:', error);
+      setError('Error al eliminar la submission');
     }
   };
 
@@ -142,27 +163,39 @@ export function Community() {
                   <span className="community-card__name">{sub.userName}</span>
                   <span className={STATUS_CLASS[sub.status]}>{STATUS_LABEL[sub.status]}</span>
                 </div>
+                
+                {sub.appCaption && (
+                  <div className="community-card__caption">
+                    📬 {sub.appCaption}
+                  </div>
+                )}
+                
                 <div className="community-card__meta">
                   <span>{formatDate(sub.createdAt)}</span>
                   {sub.allowGallery && <span className="badge badge--gallery">Galería pública</span>}
                 </div>
 
-                {sub.status === 'PENDING' && (
-                  <div className="community-card__actions">
-                    <button className="btn btn-sm success" disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'APPROVED')}>✓ Aprobar</button>
-                    <button className="btn btn-sm danger"  disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'REJECTED')}>✕ Rechazar</button>
-                  </div>
-                )}
-                {sub.status === 'APPROVED' && (
-                  <div className="community-card__actions">
+                <div className="community-card__actions">
+                  {sub.status === 'PENDING' && (
+                    <>
+                      <button className="btn btn-sm success" disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'APPROVED')}>✓ Aprobar</button>
+                      <button className="btn btn-sm danger"  disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'REJECTED')}>✕ Rechazar</button>
+                    </>
+                  )}
+                  {sub.status === 'APPROVED' && (
                     <button className="btn btn-sm danger" disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'REJECTED')}>✕ Rechazar</button>
-                  </div>
-                )}
-                {sub.status === 'REJECTED' && (
-                  <div className="community-card__actions">
+                  )}
+                  {sub.status === 'REJECTED' && (
                     <button className="btn btn-sm success" disabled={updating === sub.id} onClick={() => updateStatus(sub.id, 'APPROVED')}>✓ Aprobar</button>
-                  </div>
-                )}
+                  )}
+                  <button 
+                    className="btn btn-sm btn-delete" 
+                    onClick={() => deleteSubmission(sub.id)}
+                    title="Eliminar submission"
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </div>
               </div>
             </article>
           ))}
