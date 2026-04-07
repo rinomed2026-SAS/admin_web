@@ -40,12 +40,19 @@ communityRouter.post('/submissions', requireAuth, async (req, res, next) => {
         }
         const { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery } = body;
         console.log('Extracted fields:', { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery });
+        // Resolve userName: prefer body, fallback to authenticated user profile
+        let resolvedUserName = userName;
+        if (!resolvedUserName && req.user?.id) {
+            const user = await prisma.user.findUnique({ where: { id: req.user.id }, select: { name: true } });
+            resolvedUserName = user?.name || 'Asistente';
+            console.log('Using fallback userName from auth:', resolvedUserName);
+        }
         // Validaciones específicas con mensajes claros
-        if (!userName || typeof userName !== 'string' || userName.trim().length === 0) {
-            console.error('Invalid userName:', userName);
+        if (!resolvedUserName || typeof resolvedUserName !== 'string' || resolvedUserName.trim().length === 0) {
+            console.error('Invalid userName after fallback:', resolvedUserName);
             return res.status(400).json({
                 message: 'userName es requerido y debe ser un string no vacío.',
-                received: { userName }
+                received: { userName: resolvedUserName, hasImage: !!originalImageUrl }
             });
         }
         if (!originalImageUrl || typeof originalImageUrl !== 'string' || originalImageUrl.trim().length === 0) {
@@ -57,7 +64,7 @@ communityRouter.post('/submissions', requireAuth, async (req, res, next) => {
         }
         // Datos base que siempre existen
         const baseData = {
-            userName: userName.trim(),
+            userName: resolvedUserName.trim(),
             originalImageUrl: originalImageUrl.trim(),
             composedImageUrl: composedImageUrl?.trim() ?? null,
             allowGallery: Boolean(allowGallery),
