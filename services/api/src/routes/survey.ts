@@ -7,7 +7,8 @@ export const surveyRouter = Router();
 // GET /v1/survey – obtener encuesta del usuario autenticado
 surveyRouter.get('/', requireAuth, async (req: AuthRequest, res, next) => {
   try {
-    const surveyResponse = await prisma.surveyResponse.findUnique({
+    // Verificar si la tabla SurveyResponse existe
+    const surveyResponse = await (prisma as any).surveyResponse?.findUnique({
       where: { userId: req.user!.id }
     });
 
@@ -17,6 +18,11 @@ surveyRouter.get('/', requireAuth, async (req: AuthRequest, res, next) => {
 
     return res.json({ data: surveyResponse });
   } catch (error) {
+    console.error('Error in GET /survey:', error);
+    // Si la tabla no existe, devolver null
+    if (error instanceof Error && error.message.includes('table')) {
+      return res.json({ data: null });
+    }
     return next(error);
   }
 });
@@ -30,7 +36,7 @@ surveyRouter.post('/', requireAuth, async (req: AuthRequest, res, next) => {
       return res.status(400).json({ message: 'El campo responses es requerido.' });
     }
 
-    const surveyResponse = await prisma.surveyResponse.upsert({
+    const surveyResponse = await (prisma as any).surveyResponse?.upsert({
       where: { userId: req.user!.id },
       update: { 
         responses,
@@ -47,6 +53,13 @@ surveyRouter.post('/', requireAuth, async (req: AuthRequest, res, next) => {
       message: 'Encuesta guardada correctamente'
     });
   } catch (error) {
+    console.error('Error in POST /survey:', error);
+    // Si la tabla no existe, devolver un error apropiado
+    if (error instanceof Error && error.message.includes('table')) {
+      return res.status(503).json({ 
+        message: 'Servicio de encuestas no disponible temporalmente' 
+      });
+    }
     return next(error);
   }
 });

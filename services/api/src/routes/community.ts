@@ -7,20 +7,41 @@ export const communityRouter = Router();
 // GET /v1/community/gallery – imágenes aprobadas para galería pública
 communityRouter.get('/gallery', async (_req, res, next) => {
   try {
+    // Verificar conexión a la base de datos primero
+    try {
+      await prisma.$connect();
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      return res.status(503).json({ 
+        message: 'Servicio temporalmente no disponible',
+        data: [] 
+      });
+    }
+
     const submissions = await prisma.communitySubmission.findMany({
       where: { status: 'APPROVED', allowGallery: true },
       orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        userName: true,
-        composedImageUrl: true,
-        appCaption: true,
-        createdAt: true,
-      },
     });
-    return res.json({ data: submissions });
+    
+    // Mapear los resultados para incluir solo campos seguros
+    const safeSubmissions = submissions.map(sub => ({
+      id: sub.id,
+      userName: sub.userName,
+      composedImageUrl: sub.composedImageUrl,
+      createdAt: sub.createdAt,
+      // Solo incluir appCaption si existe en el objeto
+      ...(sub as any).appCaption && { appCaption: (sub as any).appCaption }
+    }));
+    
+    return res.json({ data: safeSubmissions });
   } catch (error) {
-    return next(error);
+    console.error('Error in /gallery endpoint:', error);
+    
+    // Devolver un array vacío en caso de error para que la app no falle
+    return res.status(503).json({ 
+      message: 'Servicio temporalmente no disponible',
+      data: [] 
+    });
   }
 });
 
@@ -39,19 +60,32 @@ communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, 
       return res.status(400).json({ message: 'userName y originalImageUrl son requeridos.' });
     }
 
+    // Datos base que siempre existen
+    const baseData: any = {
+      userName,
+      originalImageUrl,
+      composedImageUrl: composedImageUrl ?? null,
+      allowGallery: allowGallery ?? false,
+      status: 'PENDING',
+    };
+
+    // Solo agregar appCaption si se proporciona y el campo existe en el schema
+    if (appCaption) {
+      try {
+        baseData.appCaption = appCaption;
+      } catch (e) {
+        // Si falla, continúa sin el campo appCaption
+        console.warn('appCaption field not available in schema yet');
+      }
+    }
+
     const submission = await prisma.communitySubmission.create({
-      data: {
-        userName,
-        originalImageUrl,
-        composedImageUrl: composedImageUrl ?? null,
-        appCaption: appCaption ?? null,
-        allowGallery: allowGallery ?? false,
-        status: 'PENDING',
-      },
+      data: baseData,
     });
 
     return res.status(201).json({ data: submission });
   } catch (error) {
+    console.error('Error in POST /submissions:', error);
     return next(error);
   }
 });

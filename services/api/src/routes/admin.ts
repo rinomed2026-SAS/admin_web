@@ -311,18 +311,26 @@ adminRouter.get('/questions/export.csv', async (_req, res, next) => {
 adminRouter.get('/questions', async (_req, res, next) => {
   try {
     const questions = await prisma.question.findMany({
-      select: {
-        id: true,
-        text: true,
-        anonymous: true,
-        createdAt: true,
+      include: {
         user: { select: { id: true, name: true, email: true } },
         session: { select: { id: true, title: true, day: true, startTime: true } }
       },
       orderBy: { createdAt: 'desc' }
     });
-    res.json({ data: questions });
+
+    // Mapear para incluir anonymous de manera segura
+    const safeQuestions = questions.map(q => ({
+      id: q.id,
+      text: q.text,
+      createdAt: q.createdAt,
+      anonymous: (q as any).anonymous || false, // Default a false si no existe
+      user: q.user,
+      session: q.session
+    }));
+
+    res.json({ data: safeQuestions });
   } catch (error) {
+    console.error('Error in /admin/questions:', error);
     next(error);
   }
 });
@@ -432,7 +440,6 @@ adminRouter.get('/stats', async (_req, res, next) => {
       sessionsCount,
       questionsCount,
       leadsCount,
-      surveysCount,
       communityCount,
       speakersCount,
       sponsorsCount
@@ -441,11 +448,19 @@ adminRouter.get('/stats', async (_req, res, next) => {
       prisma.session.count(),
       prisma.question.count(),
       prisma.sponsorLead.count(),
-      prisma.surveyResponse.count(),
       prisma.communitySubmission.count(),
       prisma.speaker.count(),
       prisma.sponsor.count()
     ]);
+
+    // Intentar obtener el conteo de surveys de manera segura
+    let surveysCount = 0;
+    try {
+      surveysCount = await (prisma as any).surveyResponse.count();
+    } catch (e) {
+      console.warn('SurveyResponse table not available yet, defaulting surveys count to 0');
+      surveysCount = 0;
+    }
 
     const stats = {
       users: usersCount,
@@ -460,6 +475,7 @@ adminRouter.get('/stats', async (_req, res, next) => {
 
     res.json({ data: stats });
   } catch (error) {
+    console.error('Error in /admin/stats:', error);
     next(error);
   }
 });

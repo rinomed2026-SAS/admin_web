@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { config } from './lib/config.js';
+import { prisma } from './lib/prisma.js';
 import { privacyRouter } from './routes/privacy.js';
 import { authRouter } from './routes/auth.js';
 import { meRouter } from './routes/me.js';
@@ -47,7 +48,17 @@ app.use(express.json({ limit: '12mb' }));
 
 app.use(privacyRouter);
 
-app.get('/health', (_req, res) => res.json({ status: 'ok' }));
+app.get('/health', async (_req, res) => {
+  try {
+    // Verificar conexión a la base de datos
+    await prisma.$connect();
+    await prisma.$disconnect();
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (error) {
+    console.error('Database health check failed:', error);
+    res.status(503).json({ status: 'error', database: 'disconnected' });
+  }
+});
 
 app.use('/v1/auth', authRouter);
 app.use('/v1', meRouter);
