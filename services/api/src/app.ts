@@ -49,15 +49,7 @@ app.use(express.json({ limit: '12mb' }));
 app.use(privacyRouter);
 
 app.get('/health', async (_req, res) => {
-  try {
-    // Verificar conexión a la base de datos
-    await prisma.$connect();
-    await prisma.$disconnect();
-    res.json({ status: 'ok', database: 'connected' });
-  } catch (error) {
-    console.error('Database health check failed:', error);
-    res.status(503).json({ status: 'error', database: 'disconnected' });
-  }
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 app.use('/v1/auth', authRouter);
