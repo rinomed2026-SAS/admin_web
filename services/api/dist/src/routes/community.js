@@ -16,7 +16,7 @@ communityRouter.get('/gallery', async (_req, res, next) => {
             userName: sub.userName,
             composedImageUrl: sub.composedImageUrl,
             createdAt: sub.createdAt,
-            // Solo incluir appCaption si existe en el objeto
+            // Incluir appCaption si existe
             ...sub.appCaption && { appCaption: sub.appCaption }
         }));
         return res.json({ data: safeSubmissions });
@@ -70,7 +70,7 @@ communityRouter.post('/submissions', requireAuth, async (req, res, next) => {
             allowGallery: Boolean(allowGallery),
             status: 'PENDING',
         };
-        // Solo agregar appCaption si se proporciona (será ignorado si el campo no existe)
+        // Solo agregar appCaption si se proporciona
         if (appCaption && typeof appCaption === 'string' && appCaption.trim().length > 0) {
             baseData.appCaption = appCaption.trim();
         }
