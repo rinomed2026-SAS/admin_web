@@ -40,7 +40,8 @@ app.use(helmet({
 }));
 app.use(cors({ origin: config.corsOrigin, credentials: true }));
 app.use(morgan('tiny'));
-app.use(express.json({ limit: '12mb' }));
+app.use(express.json({ limit: '20mb' }));
+app.use(express.urlencoded({ limit: '20mb', extended: true }));
 app.use(privacyRouter);
 app.get('/health', async (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });

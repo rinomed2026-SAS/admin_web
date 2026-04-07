@@ -35,40 +35,89 @@ communityRouter.get('/gallery', async (_req, res, next) => {
 // POST /v1/community/submissions – crear nueva submission (requiere auth)
 communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, next) => {
   try {
-    const { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery } = req.body as {
-      userName: string;
-      originalImageUrl: string;
+    console.log('POST /submissions called with body:', JSON.stringify(req.body, null, 2));
+    console.log('User:', req.user);
+
+    // Validación más robusta
+    const body = req.body;
+    
+    if (!body) {
+      console.error('No body provided');
+      return res.status(400).json({ message: 'Request body is required' });
+    }
+
+    const { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery } = body as {
+      userName?: string;
+      originalImageUrl?: string;
       composedImageUrl?: string;
       appCaption?: string;
-      allowGallery: boolean;
+      allowGallery?: boolean;
     };
 
-    if (!userName || !originalImageUrl) {
-      return res.status(400).json({ message: 'userName y originalImageUrl son requeridos.' });
+    console.log('Extracted fields:', { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery });
+
+    // Validaciones específicas con mensajes claros
+    if (!userName || typeof userName !== 'string' || userName.trim().length === 0) {
+      console.error('Invalid userName:', userName);
+      return res.status(400).json({ 
+        message: 'userName es requerido y debe ser un string no vacío.',
+        received: { userName }
+      });
+    }
+
+    if (!originalImageUrl || typeof originalImageUrl !== 'string' || originalImageUrl.trim().length === 0) {
+      console.error('Invalid originalImageUrl:', originalImageUrl);
+      return res.status(400).json({ 
+        message: 'originalImageUrl es requerido y debe ser un string no vacío.',
+        received: { originalImageUrl }
+      });
     }
 
     // Datos base que siempre existen
     const baseData: any = {
-      userName,
-      originalImageUrl,
-      composedImageUrl: composedImageUrl ?? null,
-      allowGallery: allowGallery ?? false,
+      userName: userName.trim(),
+      originalImageUrl: originalImageUrl.trim(),
+      composedImageUrl: composedImageUrl?.trim() ?? null,
+      allowGallery: Boolean(allowGallery),
       status: 'PENDING',
     };
 
     // Solo agregar appCaption si se proporciona (será ignorado si el campo no existe)
-    if (appCaption) {
-      baseData.appCaption = appCaption;
+    if (appCaption && typeof appCaption === 'string' && appCaption.trim().length > 0) {
+      baseData.appCaption = appCaption.trim();
     }
+
+    console.log('Creating submission with data:', baseData);
 
     const submission = await prisma.communitySubmission.create({
       data: baseData,
     });
 
+    console.log('Submission created successfully:', submission);
     return res.status(201).json({ data: submission });
   } catch (error) {
     console.error('Error in POST /submissions:', error);
-    return next(error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    
+    // Devolver error más específico
+    if (error instanceof Error && error.message.includes('foreign key constraint')) {
+      return res.status(400).json({ 
+        message: 'Error de referencia en la base de datos.',
+        error: error.message 
+      });
+    }
+    
+    if (error instanceof Error && error.message.includes('unique constraint')) {
+      return res.status(400).json({ 
+        message: 'Ya existe una submission con estos datos.',
+        error: error.message 
+      });
+    }
+
+    return res.status(500).json({ 
+      message: 'Error interno del servidor.',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
