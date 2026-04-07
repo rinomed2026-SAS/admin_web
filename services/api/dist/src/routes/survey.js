@@ -20,9 +20,30 @@ surveyRouter.get('/', requireAuth, async (req, res, next) => {
 // POST /v1/survey – crear o actualizar encuesta del usuario
 surveyRouter.post('/', requireAuth, async (req, res, next) => {
     try {
-        const { responses } = req.body;
-        if (!responses) {
-            return res.status(400).json({ message: 'El campo responses es requerido.' });
+        console.log('Survey POST received body:', JSON.stringify(req.body, null, 2));
+        let responses;
+        // Soportar tanto el formato {responses: {...}} como campos directos
+        if (req.body.responses) {
+            // Formato: { responses: { overallRating: 5, ... } }
+            responses = req.body.responses;
+        }
+        else {
+            // Formato directo: { overallRating: 5, organizationRating: 5, ... }
+            // Convertir a formato responses
+            responses = {
+                overallRating: req.body.overallRating,
+                organizationRating: req.body.organizationRating,
+                eventRecommend: req.body.eventRecommend,
+                comments: req.body.comments,
+                // Incluir cualquier otro campo que venga en el body
+                ...Object.keys(req.body)
+                    .filter(key => !['overallRating', 'organizationRating', 'eventRecommend', 'comments'].includes(key))
+                    .reduce((obj, key) => ({ ...obj, [key]: req.body[key] }), {})
+            };
+        }
+        console.log('Processed responses:', responses);
+        if (!responses || Object.keys(responses).length === 0) {
+            return res.status(400).json({ message: 'No se proporcionaron datos de encuesta válidos.' });
         }
         const surveyResponse = await prisma.surveyResponse?.upsert({
             where: { userId: req.user.id },
@@ -35,6 +56,7 @@ surveyRouter.post('/', requireAuth, async (req, res, next) => {
                 responses
             }
         });
+        console.log('Survey response saved:', surveyResponse);
         return res.json({
             data: surveyResponse,
             message: 'Encuesta guardada correctamente'
@@ -42,10 +64,11 @@ surveyRouter.post('/', requireAuth, async (req, res, next) => {
     }
     catch (error) {
         console.error('Error in POST /survey:', error);
-        // Devolver un mensaje de servicio no disponible
-        return res.status(200).json({
-            data: null,
-            message: 'Servicio de encuestas no disponible temporalmente'
+        console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+        // Devolver error más específico para debug
+        return res.status(500).json({
+            message: 'Error al procesar la encuesta',
+            error: error instanceof Error ? error.message : 'Unknown error'
         });
     }
 });
