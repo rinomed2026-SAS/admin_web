@@ -9,6 +9,7 @@ const navItems = [
   { path: '/hotels', label: 'Hoteles', icon: '🏨' },
   { path: '/tourism', label: 'Turismo', icon: '🗺️' },
   { path: '/event-info', label: 'Info Evento', icon: 'ℹ️' },
+  { path: '/certificate-config', label: 'Certificados', icon: '🏆' },
   { path: '/questions', label: 'Q&A', icon: '💬' },
   { path: '/leads', label: 'Leads', icon: '✉️' },
   { path: '/users', label: 'Usuarios', icon: '👤' },

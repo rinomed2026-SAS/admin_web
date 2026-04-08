@@ -474,3 +474,50 @@ adminRouter.get('/stats', async (_req, res, next) => {
     });
   }
 });
+
+// ── CERTIFICATE CONFIG ─────────────────────────────────────────────────────
+const certificateConfigSchema = z.object({
+  mainTitle: z.string().min(1, 'Main title is required'),
+  introText: z.string().min(1, 'Intro text is required'),
+  participationText: z.string().min(1, 'Participation text is required'),
+  eventText: z.string().min(1, 'Event text is required'),
+  issuedText: z.string().min(1, 'Issued text is required'),
+  validationText: z.string().min(1, 'Validation text is required')
+});
+
+adminRouter.get('/certificate-config', async (_req, res, next) => {
+  try {
+    const config = await prisma.certificateConfig.findFirst();
+    if (!config) {
+      // Crear configuración por defecto si no existe
+      const defaultConfig = await prisma.certificateConfig.create({
+        data: {
+          mainTitle: 'CERTIFICADO DE PARTICIPACIÓN',
+          introText: 'Se certifica que',
+          participationText: 'ha participado como {subtitle} con una intensidad de {hours} horas',
+          eventText: 'en {eventName}',
+          issuedText: 'Expedido en {city}, {date}',
+          validationText: 'Código de validación:'
+        }
+      });
+      return res.json({ data: defaultConfig });
+    }
+    res.json({ data: config });
+  } catch (error) {
+    next(error);
+  }
+});
+
+adminRouter.put('/certificate-config', async (req, res, next) => {
+  try {
+    const data = certificateConfigSchema.parse(req.body);
+    const config = await prisma.certificateConfig.upsert({
+      where: { id: 1 },
+      update: data,
+      create: { id: 1, ...data }
+    });
+    res.json({ data: config });
+  } catch (error) {
+    next(error);
+  }
+});

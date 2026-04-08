@@ -287,7 +287,7 @@ async function main() {
             speakers: [neves.id]
         },
         {
-            data: { day: day2, startTime: '16:00', endTime: '16:30', room: 'Auditorio', title: 'DAL Split and Step-Up Manoeuvres', topic: 'Rinoplastia – DAL', level: 'Avanzado', description: 'Técnicas DAL Split y Step-Up Manoeuvres.' },
+            data: { day: day2, startTime: '16:00', endTime: '16:30', room: 'Auditorio', title: 'DAL Split and Step-Up Manoeuvres', topic: 'Rinoplastia – DAL', level: 'Avanzado', description: 'Técnicas avanzadas DAL Split y Step-Up Manoeuvres.' },
             speakers: [neves.id]
         },
         {
@@ -315,16 +315,16 @@ async function main() {
             speakers: [romeroG.id]
         },
         {
-            data: { day: day2, startTime: '17:30', endTime: '18:30', room: 'Auditorio', title: 'Mesa redonda final – Temas controversiales en rinoplastia', topic: 'Mesa redonda', level: 'Avanzado', description: 'Temas: manejo del paciente difícil y de alto riesgo; complicaciones en redes sociales: transparencia, reputación y manejo de críticas; piel gruesa o fibrograsa: debulking, nanofat, PRP, corticoides intralesionales o aceptar límites estéticos; perforación septal concomitante: reparación simultánea o secuencial; nariz post-filler (HA, CaHA, PMMA): tiempos de espera, disolución y evaluación ecográfica; camuflaje en piel fina.' },
+            data: { day: day2, startTime: '17:30', endTime: '18:30', room: 'Auditorio', title: 'Mesa redonda final – Temas controversiales en rinoplastia', topic: 'Mesa redonda', level: 'Avanzado', description: 'Temas controversiales: manejo del paciente difícil y de alto riesgo, complicaciones en redes sociales (transparencia, reputación y manejo de críticas), piel gruesa o fibrograsa (debulking, nanofat, PRP, corticoides intralesionales o aceptar límites estéticos), perforación septal concomitante (reparación simultánea o secuencial), nariz post-filler HA, CaHA, PMMA (tiempos de espera, disolución y evaluación ecográfica), camuflaje en piel fina.' },
             speakers: []
         },
         // CLAUSURA
         {
-            data: { day: day2, startTime: '18:30', endTime: '18:30', room: 'Auditorio', title: 'Clausura oficial RINOMED 2026', topic: 'Clausura', level: 'General', description: 'Clausura oficial del congreso.' },
+            data: { day: day2, startTime: '18:30', endTime: '19:00', room: 'Auditorio', title: 'Clausura oficial RINOMED 2026', topic: 'Clausura', level: 'General', description: 'Clausura oficial del congreso RINOMED 2026.' },
             speakers: [urzola.id, landinez.id]
         },
         {
-            data: { day: day2, startTime: '20:00', endTime: '20:00', room: 'Evento social', title: 'Evento de clausura RINOMED 2026', topic: 'Evento social', level: 'General', description: 'Actividad social del congreso. Evento con inscripción adicional.' },
+            data: { day: day2, startTime: '20:00', endTime: '23:00', room: 'La Chula', title: 'Evento de clausura RINOMED 2026 – Restaurante Show: La Chula', topic: 'Evento social', level: 'General', description: 'Actividad social del congreso. Evento con inscripción adicional.' },
             speakers: []
         }
     ];

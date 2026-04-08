@@ -60,6 +60,23 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const eventInfo = await prisma.eventInfo.findFirst();
+    
+    // Obtener configuración personalizable del certificado
+    let certificateConfig = await prisma.certificateConfig.findFirst();
+    if (!certificateConfig) {
+      // Crear configuración por defecto si no existe
+      certificateConfig = await prisma.certificateConfig.create({
+        data: {
+          mainTitle: 'CERTIFICADO DE PARTICIPACIÓN',
+          introText: 'Se certifica que',
+          participationText: 'ha participado como {subtitle} con una intensidad de {hours} horas',
+          eventText: 'en {eventName}',
+          issuedText: 'Expedido en {city}, {date}',
+          validationText: 'Código de validación:'
+        }
+      });
+    }
+    
     const validationCode = `RINO-${user.id.slice(0, 8).toUpperCase()}`;
     const config = roleConfig[user.role];
     
@@ -97,8 +114,8 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
     });
 
     // Título principal del certificado
-    page.drawText('CERTIFICADO DE PARTICIPACIÓN', {
-      x: width / 2 - 200,
+    page.drawText(certificateConfig.mainTitle, {
+      x: width / 2 - (certificateConfig.mainTitle.length * 6),
       y: height - 80,
       size: 24,
       font: titleFont,
@@ -124,8 +141,8 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
     });
 
     // Texto principal
-    page.drawText('Se certifica que', {
-      x: width / 2 - 60,
+    page.drawText(certificateConfig.introText, {
+      x: width / 2 - (certificateConfig.introText.length * 4),
       y: height - 200,
       size: 16,
       font: normalFont,
@@ -141,8 +158,10 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
       color: rgb(0, 0, 0),
     });
 
-    // Texto de participación
-    const participationText = `ha participado como ${config.subtitle} con una intensidad de ${config.hours} horas`;
+    // Texto de participación (reemplazar placeholders)
+    const participationText = certificateConfig.participationText
+      .replace('{subtitle}', config.subtitle)
+      .replace('{hours}', config.hours);
     page.drawText(participationText, {
       x: width / 2 - (participationText.length * 4),
       y: height - 290,
@@ -151,9 +170,10 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
       color: rgb(0, 0, 0),
     });
 
-    // Información del evento
-    page.drawText(`en ${eventName}`, {
-      x: width / 2 - (eventName.length * 5),
+    // Información del evento (reemplazar placeholders)
+    const eventTextContent = certificateConfig.eventText.replace('{eventName}', eventName);
+    page.drawText(eventTextContent, {
+      x: width / 2 - (eventTextContent.length * 5),
       y: height - 320,
       size: 18,
       font: boldFont,
@@ -168,9 +188,12 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
       color: rgb(0.3, 0.3, 0.3),
     });
 
-    // Fecha de emisión
-    page.drawText(`Expedido en Medellín, ${issueDate}`, {
-      x: width / 2 - 100,
+    // Fecha de emisión (reemplazar placeholders)
+    const issuedTextContent = certificateConfig.issuedText
+      .replace('{city}', eventCity.split(',')[0]) // Solo la ciudad, sin el país
+      .replace('{date}', issueDate);
+    page.drawText(issuedTextContent, {
+      x: width / 2 - (issuedTextContent.length * 3),
       y: height - 420,
       size: 12,
       font: normalFont,
@@ -192,7 +215,7 @@ certificateRouter.get('/pdf', requireAuth, async (req: AuthRequest, res, next) =
     });
 
     // Código de validación visible
-    page.drawText('Código de validación:', {
+    page.drawText(certificateConfig.validationText, {
       x: width - 200,
       y: 140,
       size: 10,

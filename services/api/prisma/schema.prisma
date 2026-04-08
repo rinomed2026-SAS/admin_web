@@ -192,3 +192,15 @@ model SurveyResponse {
 
   @@unique([userId])
 }
+
+model CertificateConfig {
+  id                  Int      @id @default(1)
+  mainTitle          String   @default("CERTIFICADO DE PARTICIPACIÓN")
+  introText          String   @default("Se certifica que")
+  participationText  String   @default("ha participado como {subtitle} con una intensidad de {hours} horas")
+  eventText          String   @default("en {eventName}")
+  issuedText         String   @default("Expedido en {city}, {date}")
+  validationText     String   @default("Código de validación:")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}

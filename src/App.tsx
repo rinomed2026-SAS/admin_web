@@ -5,6 +5,7 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Sessions, Speakers, Sponsors, Hotels, Tourism } from './pages/CrudScreens';
 import { EventInfo } from './pages/EventInfo';
+import { CertificateConfig } from './pages/CertificateConfig';
 import { Questions } from './pages/Questions';
 import { Leads } from './pages/Leads';
 import { Users } from './pages/Users';
@@ -86,6 +87,14 @@ function App() {
           }
         />
         <Route
+          path="/certificate-config"
+          element={
+            <ProtectedLayout>
+              <CertificateConfig />
+            </ProtectedLayout>
+          }
+        />
+        <Route
           path="/questions"
           element={
             <ProtectedLayout>
@@ -114,6 +123,14 @@ function App() {
           element={
             <ProtectedLayout>
               <Community />
+            </ProtectedLayout>
+          }
+        />
+        <Route
+          path="/certificate-config"
+          element={
+            <ProtectedLayout>
+              <CertificateConfig />
             </ProtectedLayout>
           }
         />
