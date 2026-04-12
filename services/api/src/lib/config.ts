@@ -13,7 +13,9 @@ export const config = {
         ...process.env.CORS_ORIGIN.split(',').map((o) => o.trim()),
         'capacitor://localhost',
         'http://localhost',
+        'https://apprinomed.com',
+        'https://www.apprinomed.com',
       ]
-    : ['http://localhost:5173', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost'],
+    : ['http://localhost:5173', 'http://localhost:8100', 'capacitor://localhost', 'http://localhost', 'https://apprinomed.com', 'https://www.apprinomed.com'],
   appUrl: process.env.APP_URL ?? 'http://localhost:8100'
 };
