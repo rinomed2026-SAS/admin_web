@@ -6,10 +6,14 @@ import { requireAuth } from '../middleware/auth.js';
 export const certificateRouter = Router();
 // Configuración de roles y colores
 const roleConfig = {
-    ASSISTANT: { title: 'Asistente', subtitle: 'asistente', hours: '20', color: { r: 0.2, g: 0.6, b: 0.9 } },
-    PROFESSOR: { title: 'Docente', subtitle: 'docente', hours: '20', color: { r: 0.1, g: 0.7, b: 0.3 } },
-    STAFF: { title: 'Personal Staff', subtitle: 'personal de apoyo', hours: '40', color: { r: 0.9, g: 0.5, b: 0.1 } },
-    ADMIN: { title: 'Organizador', subtitle: 'organizador', hours: '60', color: { r: 0.8, g: 0.2, b: 0.3 } }
+    ASSISTANT: { title: 'Asistente', subtitle: 'asistente', hours: '30', color: { r: 0.2, g: 0.6, b: 0.9 } },
+    ASSISTANT_SURGICAL: { title: 'Asistente Quirúrgico', subtitle: 'asistente quirúrgico', hours: '40', color: { r: 0.1, g: 0.7, b: 0.3 } },
+    ASSISTANT_VIRTUAL: { title: 'Asistente Virtual', subtitle: 'asistente virtual', hours: '25', color: { r: 0.5, g: 0.3, b: 0.8 } },
+    SPEAKER: { title: 'Ponente', subtitle: 'ponente', hours: '20', color: { r: 0.8, g: 0.1, b: 0.2 } },
+    COMMITTEE: { title: 'Comité Científico', subtitle: 'miembro del comité científico', hours: '35', color: { r: 0.9, g: 0.5, b: 0.1 } },
+    STAFF: { title: 'Personal Staff', subtitle: 'personal de apoyo', hours: '15', color: { r: 0.5, g: 0.5, b: 0.5 } },
+    SPONSOR: { title: 'Patrocinador', subtitle: 'patrocinador', hours: '10', color: { r: 0.8, g: 0.7, b: 0.1 } },
+    ADMIN: { title: 'Organizador', subtitle: 'organizador', hours: '45', color: { r: 0.8, g: 0.2, b: 0.3 } }
 };
 // GET /v1/certificate – devuelve metadata JSON del certificado
 certificateRouter.get('/', requireAuth, async (req, res, next) => {

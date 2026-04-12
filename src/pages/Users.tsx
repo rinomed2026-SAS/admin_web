@@ -9,7 +9,18 @@ type User = {
   createdAt: string;
 };
 
-const roleOptions = ['ADMIN', 'STAFF', 'PROFESSOR', 'ASSISTANT'];
+const roleOptions = [
+  { value: 'ADMIN', label: 'Administrador' },
+  { value: 'STAFF', label: 'Staff' },
+  { value: 'SPEAKER', label: 'Ponente' },
+  { value: 'COMMITTEE', label: 'Comité Científico' },
+  { value: 'ASSISTANT', label: 'Asistente' },
+  { value: 'ASSISTANT_SURGICAL', label: 'Asistente Quirúrgico' },
+  { value: 'ASSISTANT_VIRTUAL', label: 'Asistente Virtual' },
+  { value: 'SPONSOR', label: 'Patrocinador' },
+];
+
+const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r => [r.value, r.label]));
 
 export function Users() {
   const [users, setUsers] = useState<User[]>([]);
@@ -135,7 +146,7 @@ export function Users() {
               style={{ padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'rgba(0,0,0,0.3)', color: 'white' }}
             >
               {roleOptions.map((role) => (
-                <option key={role} value={role}>{role}</option>
+                <option key={role.value} value={role.value}>{role.label}</option>
               ))}
             </select>
           </label>
@@ -167,7 +178,7 @@ export function Users() {
           <div className="table-row" key={user.id}>
             <div>{user.name}</div>
             <div>{user.email}</div>
-            <div>{user.role}</div>
+            <div>{roleLabels[user.role] ?? user.role}</div>
             <div>{new Date(user.createdAt).toLocaleDateString()}</div>
             <div className="actions">
               <button className="btn secondary" onClick={() => handleEdit(user)} disabled={loading}>Editar</button>

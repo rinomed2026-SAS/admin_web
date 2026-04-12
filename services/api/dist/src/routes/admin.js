@@ -354,7 +354,7 @@ adminRouter.get('/users', async (_req, res, next) => {
         next(error);
     }
 });
-const userRole = z.enum(['ASSISTANT', 'PROFESSOR', 'STAFF', 'ADMIN']);
+const userRole = z.enum(['ASSISTANT', 'ASSISTANT_SURGICAL', 'ASSISTANT_VIRTUAL', 'SPEAKER', 'COMMITTEE', 'STAFF', 'SPONSOR', 'ADMIN']);
 const userCreateSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     email: z.string().email(),
