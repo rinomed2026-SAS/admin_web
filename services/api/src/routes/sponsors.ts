@@ -7,6 +7,7 @@ export const sponsorsRouter = Router();
 sponsorsRouter.get('/', async (_req, res, next) => {
   try {
     const sponsors = await prisma.sponsor.findMany({ orderBy: { tier: 'asc' } });
+    res.set('Cache-Control', 'public, max-age=60');
     return res.json({ data: sponsors });
   } catch (error) {
     return next(error);

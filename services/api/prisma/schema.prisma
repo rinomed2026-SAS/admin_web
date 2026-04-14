@@ -48,6 +48,8 @@ model Session {
   questions   Question[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+
+  @@index([day, startTime])
 }
 
 model Speaker {
@@ -81,6 +83,7 @@ model Favorite {
   createdAt DateTime @default(now())
 
   @@id([userId, sessionId])
+  @@index([userId])
 }
 
 model Question {
@@ -92,6 +95,10 @@ model Question {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([createdAt])
 }
 
 model Sponsor {
@@ -114,6 +121,9 @@ model SponsorLead {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   sponsor   Sponsor  @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([sponsorId])
 }
 
 model Hotel {
@@ -166,6 +176,9 @@ model RefreshToken {
   revokedAt DateTime?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 enum CommunitySubmissionStatus {
@@ -184,6 +197,8 @@ model CommunitySubmission {
   status           CommunitySubmissionStatus @default(PENDING)
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
+
+  @@index([status, allowGallery])
 }
 
 model SurveyResponse {

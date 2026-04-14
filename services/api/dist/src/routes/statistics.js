@@ -6,22 +6,14 @@ statisticsRouter.use(requireAuth);
 statisticsRouter.get('/', async (req, res, next) => {
     try {
         const userId = req.user.id;
-        // Contar total de sesiones
-        const totalSessions = await prisma.session.count();
-        // Contar favoritos del usuario
-        const favoriteCount = await prisma.favorite.count({
-            where: { userId }
-        });
-        // Contar preguntas del usuario
-        const questionCount = await prisma.question.count({
-            where: { userId }
-        });
+        // Run all three counts in parallel
+        const [totalSessions, favoriteCount, questionCount] = await Promise.all([
+            prisma.session.count(),
+            prisma.favorite.count({ where: { userId } }),
+            prisma.question.count({ where: { userId } }),
+        ]);
         return res.json({
-            data: {
-                totalSessions,
-                favoriteCount,
-                questionCount
-            }
+            data: { totalSessions, favoriteCount, questionCount },
         });
     }
     catch (error) {

@@ -5,7 +5,6 @@ import { prisma } from '../lib/prisma.js';
 import { hashPassword, signAccessToken, signRefreshToken, verifyPassword, verifyRefreshToken } from '../lib/auth.js';
 import { config } from '../lib/config.js';
 import { loginRateLimiter } from '../middleware/rateLimit.js';
-import { requireAuth } from '../middleware/auth.js';
 export const authRouter = Router();
 const registerSchema = z.object({
     name: z.string().min(2),
@@ -32,7 +31,7 @@ async function createRefreshToken(userId, role) {
     });
     return token;
 }
-authRouter.post('/register', async (req, res, next) => {
+authRouter.post('/register', loginRateLimiter, async (req, res, next) => {
     try {
         const data = registerSchema.parse(req.body);
         const existing = await prisma.user.findUnique({ where: { email: data.email } });
@@ -110,30 +109,4 @@ authRouter.post('/logout', async (req, res, next) => {
         return next(error);
     }
 });
-authRouter.get('/me', requireAuth, async (req, res, next) => {
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: req.user.id },
-            include: {
-                favorites: true,
-                questions: true
-            }
-        });
-        if (!user)
-            return res.status(404).json({ message: 'User not found' });
-        return res.json({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            stats: {
-                favorites: user.favorites.length,
-                questions: user.questions.length,
-                certificateAvailable: true
-            }
-        });
-    }
-    catch (error) {
-        return next(error);
-    }
-});
+// NOTE: /v1/me is served by meRouter — no duplicate here.

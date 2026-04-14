@@ -4,26 +4,22 @@ import { requireAuth, type AuthRequest } from '../middleware/auth.js';
 
 export const meRouter = Router();
 
+// Lightweight profile — counts via parallel queries instead of include
 meRouter.get('/me', requireAuth, async (req: AuthRequest, res, next) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user!.id },
-      include: {
-        favorites: true,
-        questions: true
-      }
-    });
+    const userId = req.user!.id;
+    const [user, favorites, questions] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, name: true, email: true, role: true },
+      }),
+      prisma.favorite.count({ where: { userId } }),
+      prisma.question.count({ where: { userId } }),
+    ]);
     if (!user) return res.status(404).json({ message: 'User not found' });
     return res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      stats: {
-        favorites: user.favorites.length,
-        questions: user.questions.length,
-        certificateAvailable: true
-      }
+      ...user,
+      stats: { favorites, questions, certificateAvailable: true },
     });
   } catch (error) {
     return next(error);

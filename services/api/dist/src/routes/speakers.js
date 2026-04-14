@@ -10,10 +10,13 @@ speakersRouter.get('/', async (req, res, next) => {
         if (query) {
             where.OR = [
                 { name: { contains: query, mode: 'insensitive' } },
-                { specialty: { contains: query, mode: 'insensitive' } }
+                { specialty: { contains: query, mode: 'insensitive' } },
             ];
         }
         const speakers = await prisma.speaker.findMany({ where, orderBy: { name: 'asc' } });
+        // Speakers rarely change — safe to cache 60 s
+        if (!query)
+            res.set('Cache-Control', 'public, max-age=60');
         return res.json({ data: speakers });
     }
     catch (error) {

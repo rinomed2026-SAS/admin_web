@@ -13,14 +13,12 @@ communityRouter.get('/gallery', async (_req, res, next) => {
       orderBy: { createdAt: 'desc' },
     });
     
-    // Mapear los resultados para incluir solo campos seguros
     const safeSubmissions = submissions.map(sub => ({
       id: sub.id,
       userName: sub.userName,
       composedImageUrl: sub.composedImageUrl,
+      appCaption: sub.appCaption ?? null,
       createdAt: sub.createdAt,
-      // Incluir appCaption si existe
-      ...(sub as any).appCaption && { appCaption: (sub as any).appCaption }
     }));
     
     return res.json({ data: safeSubmissions });
@@ -35,10 +33,6 @@ communityRouter.get('/gallery', async (_req, res, next) => {
 // POST /v1/community/submissions – crear nueva submission (requiere auth)
 communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, next) => {
   try {
-    console.log('POST /submissions called with body:', JSON.stringify(req.body, null, 2));
-    console.log('User:', req.user);
-
-    // Validación más robusta
     const body = req.body;
     
     if (!body) {
@@ -54,19 +48,15 @@ communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, 
       allowGallery?: boolean;
     };
 
-    console.log('Extracted fields:', { userName, originalImageUrl, composedImageUrl, appCaption, allowGallery });
-
     // Resolve userName: prefer body, fallback to authenticated user profile
     let resolvedUserName = userName;
     if (!resolvedUserName && req.user?.id) {
       const user = await prisma.user.findUnique({ where: { id: req.user.id }, select: { name: true } });
       resolvedUserName = user?.name || 'Asistente';
-      console.log('Using fallback userName from auth:', resolvedUserName);
     }
 
     // Validaciones específicas con mensajes claros
     if (!resolvedUserName || typeof resolvedUserName !== 'string' || resolvedUserName.trim().length === 0) {
-      console.error('Invalid userName after fallback:', resolvedUserName);
       return res.status(400).json({ 
         message: 'userName es requerido y debe ser un string no vacío.',
         received: { userName: resolvedUserName, hasImage: !!originalImageUrl }
@@ -74,7 +64,6 @@ communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, 
     }
 
     if (!originalImageUrl || typeof originalImageUrl !== 'string' || originalImageUrl.trim().length === 0) {
-      console.error('Invalid originalImageUrl:', originalImageUrl);
       return res.status(400).json({ 
         message: 'originalImageUrl es requerido y debe ser un string no vacío.',
         received: { originalImageUrl }
@@ -95,17 +84,13 @@ communityRouter.post('/submissions', requireAuth, async (req: AuthRequest, res, 
       baseData.appCaption = appCaption.trim();
     }
 
-    console.log('Creating submission with data:', baseData);
-
     const submission = await prisma.communitySubmission.create({
       data: baseData,
     });
 
-    console.log('Submission created successfully:', submission);
     return res.status(201).json({ data: submission });
   } catch (error) {
-    console.error('Error in POST /submissions:', error);
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    console.error('[community] POST /submissions failed:', error instanceof Error ? error.message : error);
     
     // Devolver error más específico
     if (error instanceof Error && error.message.includes('foreign key constraint')) {

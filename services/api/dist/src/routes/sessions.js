@@ -23,25 +23,24 @@ sessionsRouter.get('/', optionalAuth, async (req, res, next) => {
                 { description: { contains: query, mode: 'insensitive' } }
             ];
         }
-        const sessions = await prisma.session.findMany({
+        // Run sessions + favorites in parallel to cut latency in half
+        const sessionsP = prisma.session.findMany({
             where,
             orderBy: [{ day: 'asc' }, { startTime: 'asc' }],
             skip: (page - 1) * limit,
-            take: limit
+            take: limit,
         });
-        let favoritesSet = new Set();
-        if (req.user) {
-            const favorites = await prisma.favorite.findMany({
-                where: { userId: req.user.id },
-                select: { sessionId: true }
-            });
-            favoritesSet = new Set(favorites.map((fav) => fav.sessionId));
-        }
+        const favoritesP = req.user
+            ? prisma.favorite.findMany({ where: { userId: req.user.id }, select: { sessionId: true } })
+            : Promise.resolve([]);
+        const totalP = prisma.session.count({ where });
+        const [sessions, favorites, total] = await Promise.all([sessionsP, favoritesP, totalP]);
+        const favoritesSet = new Set(favorites.map((f) => f.sessionId));
         const data = sessions.map((session) => ({
             ...session,
-            isFavorite: req.user ? favoritesSet.has(session.id) : false
+            isFavorite: req.user ? favoritesSet.has(session.id) : false,
         }));
-        return res.json({ data, page, limit, total: data.length });
+        return res.json({ data, page, limit, total });
     }
     catch (error) {
         return next(error);

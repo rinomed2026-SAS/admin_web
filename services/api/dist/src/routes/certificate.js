@@ -3,6 +3,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import QRCode from 'qrcode';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth } from '../middleware/auth.js';
+import { pdfRateLimiter } from '../middleware/rateLimit.js';
 export const certificateRouter = Router();
 // Configuración de roles y colores
 const roleConfig = {
@@ -18,10 +19,12 @@ const roleConfig = {
 // GET /v1/certificate – devuelve metadata JSON del certificado
 certificateRouter.get('/', requireAuth, async (req, res, next) => {
     try {
-        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+        const [user, eventInfo] = await Promise.all([
+            prisma.user.findUnique({ where: { id: req.user.id } }),
+            prisma.eventInfo.findFirst(),
+        ]);
         if (!user)
             return res.status(404).json({ message: 'User not found' });
-        const eventInfo = await prisma.eventInfo.findFirst();
         const validationCode = `RINO-${user.id.slice(0, 8).toUpperCase()}`;
         const config = roleConfig[user.role];
         const certificate = {
@@ -53,12 +56,15 @@ certificateRouter.get('/', requireAuth, async (req, res, next) => {
     }
 });
 // GET /v1/certificate/pdf – genera y descarga el PDF del certificado
-certificateRouter.get('/pdf', requireAuth, async (req, res, next) => {
+certificateRouter.get('/pdf', requireAuth, pdfRateLimiter, async (req, res, next) => {
     try {
-        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+        // Run both DB lookups in parallel
+        const [user, eventInfo] = await Promise.all([
+            prisma.user.findUnique({ where: { id: req.user.id } }),
+            prisma.eventInfo.findFirst(),
+        ]);
         if (!user)
             return res.status(404).json({ message: 'User not found' });
-        const eventInfo = await prisma.eventInfo.findFirst();
         // Obtener configuración personalizable del certificado
         let certificateConfig = await prisma.certificateConfig.findFirst();
         if (!certificateConfig) {

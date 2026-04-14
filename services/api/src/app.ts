@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
 import { config } from './lib/config.js';
 import { prisma } from './lib/prisma.js';
 import { privacyRouter } from './routes/privacy.js';
@@ -24,7 +25,18 @@ export const app = express();
 
 // Trust Railway's reverse proxy so express-rate-limit works correctly
 app.set('trust proxy', 1);
-// v2 – community + sessions pagination fix
+
+// ── GLOBAL RATE LIMITER ─────────────────────────────────────────────────
+// 300 req/min per IP — prevents any single client from drowning the server
+const globalLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 300,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { message: 'Too many requests, slow down.' },
+  validate: { xForwardedForHeader: false },
+});
+app.use(globalLimiter);
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -44,13 +56,20 @@ app.use(helmet({
 }));
 app.use(cors({ origin: config.corsOrigin, credentials: true }));
 app.use(morgan('tiny'));
-app.use(express.json({ limit: '20mb' }));
-app.use(express.urlencoded({ limit: '20mb', extended: true }));
+// 2 MB is more than enough for JSON payloads; 20 MB was dangerously large
+app.use(express.json({ limit: '2mb' }));
+app.use(express.urlencoded({ limit: '2mb', extended: true }));
 
 app.use(privacyRouter);
 
+// ── HEALTH CHECK (pings DB to verify real connectivity) ─────────────────
 app.get('/health', async (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  } catch {
+    res.status(503).json({ status: 'degraded', timestamp: new Date().toISOString() });
+  }
 });
 
 app.use('/v1/auth', authRouter);
