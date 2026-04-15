@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { apiFetch } from '../api';
 
 export type Field = {
@@ -42,6 +42,7 @@ export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const load = async () => {
     try {
@@ -105,6 +106,14 @@ export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
     });
     setEditingId(item.id);
     setForm(normalized);
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Opcional: también puedes hacer focus en el primer input
+        const firstInput = formRef.current.querySelector('input, textarea, select') as HTMLElement;
+        if (firstInput) firstInput.focus();
+      }
+    }, 0);
   };
 
   const handleDelete = async (id: string) => {
@@ -131,7 +140,7 @@ export function CrudPage({ title, endpoint, fields }: CrudPageProps) {
       <h2>{title}</h2>
       {error && <div className="alert error">{error}</div>}
       {success && <div className="alert success">¡Operación exitosa!</div>}
-      <form className="card" onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit} ref={formRef}>
         <div className="form-grid">
           {fields.map((field) => (
             <label key={field.name}>
