@@ -57,8 +57,8 @@ app.use(helmet({
 app.use(cors({ origin: config.corsOrigin, credentials: true }));
 app.use(morgan('tiny'));
 // 2 MB is more than enough for JSON payloads; 20 MB was dangerously large
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ limit: '2mb', extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 app.use(privacyRouter);
 
