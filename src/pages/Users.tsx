@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { apiFetch } from '../api';
 
 type User = {
@@ -22,13 +22,13 @@ const roleOptions = [
 
 const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r => [r.value, r.label]));
 
-export function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState<Partial<User> & { password?: string }>({ role: 'ASSISTANT' });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const load = async () => {
     const response = await apiFetch('/v1/admin/users');
@@ -84,6 +84,9 @@ export function Users() {
   const handleEdit = (user: User) => {
     setEditingId(user.id);
     setForm({ name: user.name, email: user.email, role: user.role });
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 0);
   };
 
   const handleDelete = async (id: string) => {
@@ -114,7 +117,7 @@ export function Users() {
       {error && <div className="alert error">{error}</div>}
       {success && <div className="alert success">Cambios guardados</div>}
 
-      <form className="card" onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit} ref={formRef}>
         <div className="form-grid">
           <label>
             Nombre

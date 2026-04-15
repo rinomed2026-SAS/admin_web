@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { apiFetch } from '../api';
 
 const defaultState = {
@@ -15,8 +15,8 @@ const defaultState = {
   academicHours: ''
 };
 
-export function EventInfo() {
   const [form, setForm] = useState(defaultState);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -34,12 +34,15 @@ export function EventInfo() {
       body: JSON.stringify(form)
     });
     alert('Información guardada');
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 0);
   };
 
   return (
     <section className="page">
       <h2>Info Evento</h2>
-      <form className="card" onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit} ref={formRef}>
         <div className="form-grid">
           {Object.keys(defaultState).map((key) => (
             <label key={key}>

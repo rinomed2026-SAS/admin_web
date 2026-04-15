@@ -21,8 +21,9 @@ async function main() {
   const adminPassword = await hashPassword('Rinomed2026!');
   const attendeePassword = await hashPassword('Rinomed2026!');
 
+  // --- GENERADO AUTOMÁTICAMENTE DESDE CSV ---
   const assistantRoster = [
-    { name: 'CARLOS ANDRES URZOLA MOSQUERA', email: 'carlosurzola36@gmail.com', cedula: '7990526' },
+    { name: 'CARLOS ANDRES URZOLA MOSQUERA', email: 'carlosurzola36@gmail.com', cedula: '79905269' },
     { name: 'Sebastian Orozco', email: 'sebastian.orozcoa@udea.edu.co', cedula: '1037582186' },
     { name: 'Mariana Velez Garces', email: 'mariana.velez1@udea.edu.co', cedula: '1152216203' },
     { name: 'Manuela Alejandra Rodríguez Cortés', email: 'manuelaroco1@gmail.com', cedula: '1020821066' },
@@ -79,7 +80,7 @@ async function main() {
     { name: 'GUZMAN PARRA LINARES', email: 'guzman1932@gmail.com', cedula: '16655771' },
     { name: 'ROSANGELA MARIA MONCADA ORDUÑO', email: 'rosangelamoncada26@gmail.com', cedula: '183204866' },
     { name: 'VANESSA DEL CARMEN COLINA', email: 'dravanessacolina279@gmail.com', cedula: '7863082' },
-    { name: 'PAULA ANDREA JARAMILLO CUARTAS', email: 'panjacu@hotmail.com', cedula: '43155936' },
+    { name: 'PAULA ANDREA  JARAMILLO CUARTAS', email: 'panjacu@hotmail.com', cedula: '43155936' },
     { name: 'Jhonny Alexander Ortiz', email: 'drortiz.orl@gmail.com', cedula: '1085307846' },
     { name: 'Jonathan Rozenboim Matiz', email: 'jrozenboim@gmail.com', cedula: '72285786' },
     { name: 'Betsy Patricia Pareja Ibarra', email: 'paty.pareja@gmail.com', cedula: '52646358' },
@@ -99,7 +100,40 @@ async function main() {
     { name: 'Flor de Maria Romero Reyes', email: 'draromeroreyes@yahoo.com', cedula: 'C 01087798' },
     { name: 'José Manuel Salvatierra Gonzales', email: 'j.salvatierra@hotmail.es', cedula: '123776818' },
     { name: 'Carolina Casallas', email: 'karocasallas@hotmail.com', cedula: '52858996' },
-    { name: 'MELANIE LISSETH Quispe garces', email: 'quispegarcesmelanie@gmail.com', cedula: '46290598' }
+    { name: 'MELANIE LISSETH Quispe garces', email: 'quispegarcesmelanie@gmail.com', cedula: '46290598' },
+    { name: 'Zelmira Palomino Alarcon', email: 'Jhoel_lc20@hotmail.com', cedula: '40215994' },
+    { name: 'Rouny Jhoel Limache Cutipa', email: 'Jhoel_lc20@hotmail.com', cedula: '42155032' },
+    { name: 'Marlon de Jesús Consuegra González', email: 'drmconsuegra@gmail.com', cedula: '79934403' },
+    { name: 'Ricardo Quitral', email: 'rquitral@gmail.com', cedula: '10057690-2' },
+    { name: 'Verónica Paola Morejón Acurio', email: 'acuvero@hotmail.com', cedula: 'A4394319' },
+    { name: 'Mauricio Alejandro Bernal Carreon', email: 'oppugno17@gmail.com', cedula: 'N01350792' },
+    { name: 'Jennifer Viviana Montaña', email: 'jennivm08@gmail.com', cedula: '176758019' },
+    { name: 'RAFAEL GARCIA MARQUEZ', email: 'rggarciamarquez@gmail.com', cedula: '196627114' },
+    { name: 'Natalia Marcela Arrieta Rodriguez', email: 'natiimarcee@gmail.com', cedula: '1004353253' },
+    { name: 'MARIO MONTOYA', email: 'Mariomontoyave@gmail.com', cedula: '1017196188' },
+    { name: 'Javier Alfonso Novoa Villamil', email: 'Javier_novoa_1@hotmail.com', cedula: '6760451' },
+    { name: 'Dario Rodríguez', email: 'conlabendicion2024@gmail.com', cedula: '584124797519' },
+    { name: 'jason steve homez beltran', email: 'jshomezb@gmail.com', cedula: '1014196575' },
+    { name: 'Carlos Betancur Madrid', email: 'quirosolucionessas@gmail.com', cedula: '71311570' },
+    { name: 'Evert Armando Jimenez Cotes', email: 'evert_sp@hotmail.com', cedula: '1037613222' },
+    { name: 'Esteban Correa Acebedo', email: 'Ecorrea04@gmail.com', cedula: '1152447491' },
+    { name: 'Lina Patricia Franco Chaparro', email: 'lina_franco@hotmail.com', cedula: '1013595775' },
+    { name: 'Melissa Mayo Patiño', email: 'mayo_meli@hotmail.com', cedula: '1019041747' },
+    { name: 'Lina Cardona', email: 'liniscardona@gmail.com', cedula: '30234707' },
+    { name: 'Lizbeth Vanessa Olivera Flores', email: 'dra.vaneolivera@gmail.com', cedula: 'XE10824' },
+    { name: 'JORGE JULIAN MENDOZA ANGUILA', email: 'julian.mendoza1@udea.edu.co', cedula: '1065655575' },
+    { name: 'JOEL JOSÉ RODRÍGUEZ FERNÁNDEZ', email: 'joeljrodriguezf@gmail.com', cedula: '40223896594' },
+    { name: 'Norma Andrea Mares Villaseñor', email: 'andysea89@hotmail.com', cedula: 'G37079750' },
+    { name: 'Nestor Sánchez Rojas', email: 'nsanchezcp@gmail.com', cedula: '3413951' },
+    { name: 'Jeinner Alfredo Paredes Daza', email: 'jeinner2013@gmail.com', cedula: '124024858' },
+    { name: 'Percy Miguel Aramayo Foraquita', email: 'paramfor@gmail.com', cedula: '71306905' },
+    { name: 'Daniela Alvarez', email: 'danielalv1124@gmail.com', cedula: '1112489908' },
+    { name: 'Estefani Zuzunaga', email: 'estef.zuzunaga@gmail.com', cedula: '70073044' },
+    { name: 'Mario Hernán Porras Martínez', email: 'Dr.marioporras@gmail.com', cedula: '1098758878' },
+    { name: 'Germán Pablo Sandoval Ortíz', email: 'contabilidad.audiofon@gmail.com', cedula: '13844240' },
+    { name: 'MARINO ALEJANDRO CARDONA GONZALEZ', email: 'dr.alejandrocardona@gmail.com', cedula: '98668195' },
+    { name: 'Juan Carlos Martínez Osorio', email: 'juancm10@ucm.es', cedula: 'N04527827' },
+    { name: 'Guillermo Landinez', email: 'guillermoarturo.landinez@gmail.com', cedula: '79956285' }
   ];
 
   // Deduplicate by email, hash each user's cedula as their password

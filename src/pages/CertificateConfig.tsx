@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { apiFetch } from '../api';
 
 interface CertificateConfig {
@@ -21,9 +21,9 @@ const defaultState: CertificateConfig = {
   validationText: 'Código de validación:'
 };
 
-export function CertificateConfig() {
   const [form, setForm] = useState(defaultState);
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -47,6 +47,9 @@ export function CertificateConfig() {
         body: JSON.stringify(form)
       });
       alert('Configuración del certificado guardada exitosamente');
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 0);
     } catch (error) {
       console.error('Error saving certificate config:', error);
       alert('Error al guardar la configuración');
@@ -63,7 +66,7 @@ export function CertificateConfig() {
         Puedes usar los siguientes placeholders: {'{subtitle}'}, {'{hours}'}, {'{eventName}'}, {'{city}'}, {'{date}'}
       </p>
       
-      <form className="card" onSubmit={handleSubmit}>
+      <form className="card" onSubmit={handleSubmit} ref={formRef}>
         <div className="form-grid">
           <label>
             <span>Título Principal</span>
