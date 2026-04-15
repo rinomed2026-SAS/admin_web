@@ -85,7 +85,11 @@ const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r 
     setEditingId(user.id);
     setForm({ name: user.name, email: user.email, role: user.role });
     setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const firstInput = formRef.current.querySelector('input, textarea, select') as HTMLElement;
+        if (firstInput) firstInput.focus();
+      }
     }, 0);
   };
 
