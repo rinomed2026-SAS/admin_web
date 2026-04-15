@@ -152,30 +152,10 @@ export function CertificateConfig() {
       </form>
 
       <div className="card" style={{ marginTop: '24px' }}>
-        <h3>Vista Previa</h3>
-        <div className="certificate-preview">
-          <div className="preview-section">
-            <strong>{form.mainTitle}</strong>
-          </div>
-          <div className="preview-section">
-            {form.introText}
-          </div>
-          <div className="preview-section">
-            <strong>NOMBRE DEL USUARIO</strong>
-          </div>
-          <div className="preview-section">
-            {form.participationText.replace('{subtitle}', 'asistente').replace('{hours}', '20')}
-          </div>
-          <div className="preview-section">
-            {form.eventText.replace('{eventName}', 'RINOMED 2026')}
-          </div>
-          <div className="preview-section">
-            <small>{form.issuedText.replace('{city}', 'Medellín').replace('{date}', 'abril de 2026')}</small>
-          </div>
-          <div className="preview-section">
-            <small>{form.validationText} RINO-12345678</small>
-          </div>
-        </div>
+        <h3>Certificación Oficial del Evento</h3>
+        <p className="page-description" style={{ margin: 0 }}>
+          La emisión de certificados oficiales se encuentra habilitada para RINOMED 2026, encuentro internacional de referencia en rinoplastia y cirugía facial. Cada certificado se genera automáticamente con la plantilla institucional según el rol del participante y queda disponible para su descarga en la aplicación móvil.
+        </p>
       </div>
     </section>
   );
