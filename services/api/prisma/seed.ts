@@ -5,6 +5,7 @@ const day1 = new Date('2026-04-17T00:00:00.000Z');
 const day2 = new Date('2026-04-18T00:00:00.000Z');
 
 async function main() {
+  // ...
   await prisma.refreshToken.deleteMany();
   await prisma.sponsorLead.deleteMany();
   await prisma.question.deleteMany();
@@ -21,9 +22,82 @@ async function main() {
   const adminPassword = await hashPassword('Rinomed2026!');
   const attendeePassword = await hashPassword('Rinomed2026!');
 
+  // Usuario de revisión
+  await prisma.user.create({
+    data: {
+      name: 'Reviewer Admin',
+      email: 'review@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+
+  // Admins adicionales
+  await prisma.user.create({
+    data: {
+      name: 'Admin Uno',
+      email: 'admin1@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+  await prisma.user.create({
+    data: {
+      name: 'Admin Dos',
+      email: 'admin2@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+  await prisma.user.create({
+    data: {
+      name: 'Admin Tres',
+      email: 'admin3@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+
+  // Usuario de revisión
+  await prisma.user.create({
+    data: {
+      name: 'Reviewer Admin',
+      email: 'review@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+
+  // Admins adicionales
+  await prisma.user.create({
+    data: {
+      name: 'Admin Uno',
+      email: 'admin1@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+  await prisma.user.create({
+    data: {
+      name: 'Admin Dos',
+      email: 'admin2@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+  await prisma.user.create({
+    data: {
+      name: 'Admin Tres',
+      email: 'admin3@rinomed2026.com',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    }
+  });
+
   // --- GENERADO AUTOMÁTICAMENTE DESDE CSV ---
   // Actualizado desde el CSV, ahora incluye el campo 'tipo'
   const assistantRoster = [
+      { name: 'Reviewer Admin', cedula: 'review2026', email: 'review@rinomed2026.com', tipo: 'Asistente' },
     { name: 'Lisandro Guerra', cedula: '71755048', email: 'guerralisandro@gmail.com', tipo: 'Asistente' },
     { name: 'Santiago Hernandez', cedula: '1037634236', email: 'santiagoha32@gmail.com', tipo: 'Asistente' },
     { name: 'Gustavo Vanegas', cedula: '80092720', email: 'gusvanegasorl@gmail.com', tipo: 'Asistente' },
