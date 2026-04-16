@@ -196,4 +196,3 @@ const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r 
       </div>
     </section>
   );
-}

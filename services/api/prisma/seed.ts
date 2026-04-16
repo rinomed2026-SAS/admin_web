@@ -23,8 +23,14 @@ async function main() {
   const attendeePassword = await hashPassword('Rinomed2026!');
 
   // Usuario de revisión
-  await prisma.user.create({
-    data: {
+  await prisma.user.upsert({
+    where: { email: 'review@rinomed2026.com' },
+    update: {
+      name: 'Reviewer Admin',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    },
+    create: {
       name: 'Reviewer Admin',
       email: 'review@rinomed2026.com',
       passwordHash: adminPassword,
@@ -33,24 +39,42 @@ async function main() {
   });
 
   // Admins adicionales
-  await prisma.user.create({
-    data: {
+  await prisma.user.upsert({
+    where: { email: 'admin1@rinomed2026.com' },
+    update: {
+      name: 'Admin Uno',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    },
+    create: {
       name: 'Admin Uno',
       email: 'admin1@rinomed2026.com',
       passwordHash: adminPassword,
       role: 'ADMIN',
     }
   });
-  await prisma.user.create({
-    data: {
+  await prisma.user.upsert({
+    where: { email: 'admin2@rinomed2026.com' },
+    update: {
+      name: 'Admin Dos',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    },
+    create: {
       name: 'Admin Dos',
       email: 'admin2@rinomed2026.com',
       passwordHash: adminPassword,
       role: 'ADMIN',
     }
   });
-  await prisma.user.create({
-    data: {
+  await prisma.user.upsert({
+    where: { email: 'admin3@rinomed2026.com' },
+    update: {
+      name: 'Admin Tres',
+      passwordHash: adminPassword,
+      role: 'ADMIN',
+    },
+    create: {
       name: 'Admin Tres',
       email: 'admin3@rinomed2026.com',
       passwordHash: adminPassword,
@@ -97,7 +121,6 @@ async function main() {
   // --- GENERADO AUTOMÁTICAMENTE DESDE CSV ---
   // Actualizado desde el CSV, ahora incluye el campo 'tipo'
   const assistantRoster = [
-      { name: 'Reviewer Admin', cedula: 'review2026', email: 'review@rinomed2026.com', tipo: 'Asistente' },
     { name: 'Lisandro Guerra', cedula: '71755048', email: 'guerralisandro@gmail.com', tipo: 'Asistente' },
     { name: 'Santiago Hernandez', cedula: '1037634236', email: 'santiagoha32@gmail.com', tipo: 'Asistente' },
     { name: 'Gustavo Vanegas', cedula: '80092720', email: 'gusvanegasorl@gmail.com', tipo: 'Asistente' },
