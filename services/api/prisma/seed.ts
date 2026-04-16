@@ -7,6 +7,11 @@ const day2 = new Date('2026-04-18T00:00:00.000Z');
 
 async function main() {
   // =========================================================
+  // LIMPIEZA DE TABLAS (para evitar duplicados)
+  // =========================================================
+  await prisma.sessionSpeaker.deleteMany({});
+  await prisma.session.deleteMany({});
+  // =========================================================
   // ADMIN
   // =========================================================
   const adminPassword = await hashPassword('Admin123*');
