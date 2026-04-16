@@ -84,10 +84,8 @@ async function main() {
   { name: 'Andrés Felipe González Restrepo', email: 'andres_felipe_gr@hotmail.com', cedula: '14702748', tipo: 'Asistente' },
   { name: 'Antonieta Gomez', email: 'antonietagomez83@gmail.com', cedula: '1020823714', tipo: 'Asistente' },
   { name: 'Ariel Felipe Llamas García', email: 'arielllamasgarcias@gmail.com', cedula: '73191341', tipo: 'Asistente' },
-
   { name: 'Betsy Patricia Pareja Ibarra', email: 'paty.pareja@gmail.com', cedula: '52646358', tipo: 'Asistente' },
   { name: 'Boris Luis Martinez Arellano', email: 'martinezboris.1125@gmail.com', cedula: '73194043', tipo: 'Asistente' },
-
   { name: 'Carlos Alberto Gamboa Montesdeoc', email: 'doctor.gamboa@hotmail.com', cedula: '6530855', tipo: 'Asistente' },
   { name: 'Carlos Betancur Madrid', email: 'quirosolucionessas@gmail.com', cedula: '71311570', tipo: 'Asistente' },
   { name: 'Carlos Mario Rondón Pinilla', email: 'carlosrondon@gmail.com', cedula: '1032438974', tipo: 'Asistente' },
@@ -95,7 +93,6 @@ async function main() {
   { name: 'Carolina Casallas', email: 'karocasallas@hotmail.com', cedula: '52858996', tipo: 'Asistente' },
   { name: 'Cesar Edwin Martínez Correa', email: 'cesarmartinezcorrea@yahoo.com', cedula: '93381089', tipo: 'Asistente con cirugía' },
   { name: 'Claudia Patricia Garcia Giraldo', email: 'consultoriocer@hotmail.com', cedula: '43557582', tipo: 'Asistente' },
-
   { name: 'Damian Eztala', email: 'damianeztala@gmail.com', cedula: '34324140', tipo: 'Asistente' },
   { name: 'Daniel Alejandro Montoya Castaño', email: 'damontoya.otorrino@gmail.com', cedula: '1088303633', tipo: 'Asistente' },
   { name: 'Daniel Andulce', email: 'danielandulce@gmail.com', cedula: '94441260', tipo: 'Asistente Virtual' },
@@ -104,10 +101,8 @@ async function main() {
   { name: 'Denys Arteaga', email: 'gerenciageneral@clinicaisis.com', cedula: '64575796', tipo: 'Asistente' },
   { name: 'Diana Gutierrez', email: 'dianacgd.dcgd@gmail.com', cedula: '176774794', tipo: 'Asistente' },
   { name: 'Diego Fernando Suescun Gomez', email: 'diegosuescun@yahoo.es', cedula: '86062353', tipo: 'Asistente' },
-
   { name: 'Esteban Correa Acebedo', email: 'Ecorrea04@gmail.com', cedula: '1152447491', tipo: 'Asistente' },
   { name: 'Evert Armando Jimenez Cotes', email: 'evert_sp@hotmail.com', cedula: '1037613222', tipo: 'Asistente' },
-
   { name: 'Fabian Henao', email: 'dr.fabianhenao1@gmail.com', cedula: '1061693647', tipo: 'Asistente' },
   { name: 'Fabio Alejandro Motta Cortes', email: 'dr_mottac@hotmail.com', cedula: '80041841', tipo: 'Asistente' },
   { name: 'Fernando Pedroza', email: 'fpedroza@lafont.com.co', cedula: '14963860', tipo: 'Asistente' },
@@ -115,7 +110,6 @@ async function main() {
   { name: 'Francisco Javier Franco Gonzalez', email: 'fcofdr@gmail.com', cedula: 'G28542944', tipo: 'Asistente' },
   { name: 'Fredy Dario Ortiz Ortiz', email: 'drfredyortiz@gmail.com', cedula: '87061171', tipo: 'Asistente con cirugía' },
   { name: 'Freddy Navarro Niño', email: 'freddysoad@hotmail.com', cedula: '1090375249', tipo: 'Asistente' },
-
   { name: 'German Bernal', email: 'dr.germanbernal@gmail.com', cedula: '80926179', tipo: 'Asistente' },
   { name: 'Germán Pablo Sandoval Ortíz', email: 'contabilidad.audiofon@gmail.com', cedula: '13844240', tipo: 'Asistente' },
   { name: 'Giovanny Linares Carreon', email: 'tathianadelrocio@gmail.com', cedula: '29470841', tipo: 'Asistente con cirugía' },
@@ -123,12 +117,9 @@ async function main() {
   { name: 'Gustavo Urzola', email: 'inggustavourzola@gmail.com', cedula: '1020723270', tipo: 'Asistente' },
   { name: 'Gustavo Vanegas', email: 'gusvanegasorl@gmail.com', cedula: '80092720', tipo: 'Asistente' },
   { name: 'Guzman Parra Linares', email: 'guzman1932@gmail.com', cedula: '16655771', tipo: 'Asistente con cirugía' },
-
   { name: 'Hugo Henando Beltran Bonilla', email: 'hugobeltranb@hotmail.com', cedula: '79999975', tipo: 'Asistente' },
-
   { name: 'Ileana Carolina Potes', email: 'ileanacarolinap@gmail.com', cedula: '57105426', tipo: 'Asistente' },
   { name: 'Ileana Perea Mena', email: 'ileneperea.otorrino@gmail.com', cedula: '1026269638', tipo: 'Asistente' },
-
   { name: 'Javier Alfonso Novoa Villamil', email: 'Javier_novoa_1@hotmail.com', cedula: '6760451', tipo: 'Asistente' },
   { name: 'Jennifer Viviana Montaña', email: 'jennivm08@gmail.com', cedula: '176758019', tipo: 'Asistente' },
   { name: 'Jeinner Alfredo Paredes Daza', email: 'jeinner2013@gmail.com', cedula: '124024858', tipo: 'Asistente Virtual' },
@@ -143,9 +134,7 @@ async function main() {
   { name: 'Juan Fernando Gomez Lopera', email: 'jfgomezotorrino@gmail.com', cedula: '3349695', tipo: 'Asistente' },
   { name: 'Juliana Aguirre Rodas', email: 'drajulianaaguirre@outlook.com', cedula: '1088246869', tipo: 'Asistente con cirugía' },
   { name: 'Juliana Montero Cortes', email: 'julianamontero1@gmail.com', cedula: '1065569820', tipo: 'Asistente' },
-
   { name: 'Kristel Achio Artavia', email: 'info@draachio.com', cedula: '6-0338-0181', tipo: 'Asistente' },
-
   { name: 'Ladislao Higuera arends', email: 'drladislaohiguera@gmail.com', cedula: '24303138', tipo: 'Asistente' },
   { name: 'Leon Felipe Zapata Giraldo', email: 'leonfelipezapatag@gmail.com', cedula: '1128479450', tipo: 'Asistente' },
   { name: 'Liliana Gutierrez', email: 'liliguvi1967@gmail.com', cedula: '43894675', tipo: 'Asistente' },
@@ -156,7 +145,6 @@ async function main() {
   { name: 'Lisandro Guerra', email: 'guerralisandro@gmail.com', cedula: '71755048', tipo: 'Asistente' },
   { name: 'Lizbeth Vanessa Olivera Flores', email: 'dra.vaneolivera@gmail.com', cedula: 'XE10824', tipo: 'Asistente Virtual' },
   { name: 'Luz Bibiana Florez Giraldo', email: 'luzbibiana@gmail.com', cedula: '43755493', tipo: 'Asistente' },
-
   { name: 'Maria Fernanda Maria', email: 'mafeguerra85@hotmail.com', cedula: '1140849467', tipo: 'Asistente' },
   { name: 'Mario Botero', email: 'mabotero70@gmail.com', cedula: '70109602', tipo: 'Asistente' },
   { name: 'Mario Montoya', email: 'Mariomontoyave@gmail.com', cedula: '1017196188', tipo: 'Asistente' },
@@ -164,27 +152,21 @@ async function main() {
   { name: 'Marlon de Jesús Consuegra González', email: 'drmconsuegra@gmail.com', cedula: '79934403', tipo: 'Asistente' },
   { name: 'Melissa Mayo Patiño', email: 'mayo_meli@hotmail.com', cedula: '1019041747', tipo: 'Asistente' },
   { name: 'Minor Valverde Madriz', email: 'gerencia@rinofacecr.com', cedula: '112610566', tipo: 'Asistente' },
-
   { name: 'Natalia Alexandra Yepes Garcia', email: 'natyyepes33@yahoo.com', cedula: '42690766', tipo: 'Asistente' },
   { name: 'Nestor Sánchez Rojas', email: 'nsanchezcp@gmail.com', cedula: '3413951', tipo: 'Asistente Virtual' },
   { name: 'Norma Andrea Mares Villaseñor', email: 'andysea89@hotmail.com', cedula: 'G37079750', tipo: 'Asistente Virtual' },
-
   { name: 'Paula Andrea Jaramillo Cuartas', email: 'panjacu@hotmail.com', cedula: '43155936', tipo: 'Asistente' },
-
   { name: 'Rafael Garcia Marquez', email: 'rggarciamarquez@gmail.com', cedula: '196627114', tipo: 'Asistente con cirugía' },
   { name: 'Ricardo Quitral', email: 'rquitral@gmail.com', cedula: '10057690-2', tipo: 'Asistente' },
   { name: 'Rocio Luna Florez', email: 'rocioluna64@yahoo.com', cedula: '39011873', tipo: 'Asistente Virtual' },
   { name: 'Rosangela Maria Moncada Orduño', email: 'rosangelamoncada26@gmail.com', cedula: '183204866', tipo: 'Asistente' },
   { name: 'Rouny Jhoel Limache Cutipa', email: 'Jhoel_lc20@hotmail.com', cedula: '42155032', tipo: 'Asistente con cirugía' },
-
   { name: 'Santiago Hernandez', email: 'santiagoha32@gmail.com', cedula: '1037634236', tipo: 'Asistente' },
-
   { name: 'Vanessa del Carmen Colina', email: 'dravanessacolina279@gmail.com', cedula: '7863082', tipo: 'Asistente' },
   { name: 'Vanessa Palencia Suarez', email: 'vanessapal2012@gmail.com', cedula: '1100395163', tipo: 'Asistente' },
   { name: 'Verónica Paola Morejón Acurio', email: 'acuvero@hotmail.com', cedula: 'A4394319', tipo: 'Asistente con cirugía' },
   { name: 'Victor Hugo Villacis Basante', email: 'drvictorvillacisb@gmail.com', cedula: '1085269782', tipo: 'Asistente con cirugía' },
   { name: 'Visnelia Alexandra Martínez Rivas', email: 'visneliam@gmail.com', cedula: '180950656', tipo: 'Asistente con cirugía' },
-
   { name: 'Xiomara Correa Jimenez', email: 'xiomaracorreajimenez@hotmail.com', cedula: '43588097', tipo: 'Asistente' },
   { name: 'Yorban O Bolanos G', email: 'yorban.otorrino@gmail.com', cedula: '1040181272', tipo: 'Asistente' },
   { name: 'Zelmira Palomino Alarcon', email: 'Jhoel_lc20@hotmail.com', cedula: '40215994', tipo: 'Asistente con cirugía' }

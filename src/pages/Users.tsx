@@ -23,6 +23,9 @@ const roleOptions = [
 const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r => [r.value, r.label]));
 
   const [users, setUsers] = useState<User[]>([]);
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState<keyof User | 'none'>('none');
+  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [form, setForm] = useState<Partial<User> & { password?: string }>({ role: 'ASSISTANT' });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState('');
@@ -114,9 +117,48 @@ const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r 
     }
   };
 
+  // --- FILTRADO Y ORDENAMIENTO ---
+  const filteredUsers = users.filter(u => {
+    const q = search.toLowerCase();
+    return (
+      u.name.toLowerCase().includes(q) ||
+      u.email.toLowerCase().includes(q) ||
+      (roleLabels[u.role]?.toLowerCase().includes(q) ?? false)
+    );
+  });
+
+  const sortedUsers = [...filteredUsers];
+  if (sortBy !== 'none') {
+    sortedUsers.sort((a, b) => {
+      let v1 = a[sortBy] ?? '';
+      let v2 = b[sortBy] ?? '';
+      if (sortBy === 'createdAt') {
+        v1 = new Date(v1 as string).getTime();
+        v2 = new Date(v2 as string).getTime();
+      } else {
+        v1 = v1.toString().toLowerCase();
+        v2 = v2.toString().toLowerCase();
+      }
+      if (v1 < v2) return sortDir === 'asc' ? -1 : 1;
+      if (v1 > v2) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  // --- RENDER ---
   return (
     <section className="page">
       <h2>Usuarios</h2>
+
+      <div style={{ margin: '16px 0', display: 'flex', gap: 16, alignItems: 'center' }}>
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Buscar por nombre, email o rol..."
+          style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'rgba(0,0,0,0.3)', color: 'white', minWidth: 220 }}
+        />
+      </div>
 
       {error && <div className="alert error">{error}</div>}
       {success && <div className="alert success">Cambios guardados</div>}
@@ -175,13 +217,33 @@ const roleLabels: Record<string, string> = Object.fromEntries(roleOptions.map(r 
 
       <div className="table">
         <div className="table-row header">
-          <div>Nombre</div>
-          <div>Email</div>
-          <div>Rol</div>
-          <div>Creado</div>
+          <div style={{ cursor: 'pointer' }} onClick={() => {
+            setSortBy('name');
+            setSortDir(sortBy === 'name' && sortDir === 'asc' ? 'desc' : 'asc');
+          }}>
+            Nombre {sortBy === 'name' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+          </div>
+          <div style={{ cursor: 'pointer' }} onClick={() => {
+            setSortBy('email');
+            setSortDir(sortBy === 'email' && sortDir === 'asc' ? 'desc' : 'asc');
+          }}>
+            Email {sortBy === 'email' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+          </div>
+          <div style={{ cursor: 'pointer' }} onClick={() => {
+            setSortBy('role');
+            setSortDir(sortBy === 'role' && sortDir === 'asc' ? 'desc' : 'asc');
+          }}>
+            Rol {sortBy === 'role' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+          </div>
+          <div style={{ cursor: 'pointer' }} onClick={() => {
+            setSortBy('createdAt');
+            setSortDir(sortBy === 'createdAt' && sortDir === 'asc' ? 'desc' : 'asc');
+          }}>
+            Creado {sortBy === 'createdAt' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+          </div>
           <div>Acciones</div>
         </div>
-        {users.map((user) => (
+        {sortedUsers.map((user) => (
           <div className="table-row" key={user.id}>
             <div>{user.name}</div>
             <div>{user.email}</div>
