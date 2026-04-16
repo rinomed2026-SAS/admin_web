@@ -236,9 +236,15 @@ async function main() {
       name: a.name?.trim() ?? '',
       email: a.email?.trim().toLowerCase() ?? '',
       passwordHash: await hashPassword(a.cedula ?? ''),
-      role: tipoToRole[(a.tipo ?? '').trim() as keyof typeof tipoToRole] ?? 'ASSISTANT',
+      role: (tipoToRole[(a.tipo ?? '').trim() as keyof typeof tipoToRole] ?? 'ASSISTANT') as any,
     }))
   );
+
+  // Crear usuarios asistentes, omitiendo duplicados
+  await prisma.user.createMany({
+    data: assistantUsers,
+    skipDuplicates: true,
+  });
 
   // ...
 
