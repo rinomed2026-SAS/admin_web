@@ -11,6 +11,12 @@ async function main() {
   // =========================================================
   await prisma.sessionSpeaker.deleteMany({});
   await prisma.session.deleteMany({});
+  await prisma.speaker.deleteMany({});
+  await prisma.eventInfo.deleteMany({});
+  await prisma.sponsor.deleteMany({});
+  await prisma.hotel.deleteMany({});
+  await prisma.tourism.deleteMany({});
+
   // =========================================================
   // ADMIN
   // =========================================================
@@ -302,7 +308,7 @@ async function main() {
       { name: 'Procaps', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_procaps.png', description: '', websiteUrl: '', products: '' },
       { name: 'Promta', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_promta.png', description: '', websiteUrl: '', products: '' },
       { name: 'Renacer', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_renacer.png', description: '', websiteUrl: '', products: '' },
-      { name: 'Sanofi', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_sanofi.jpg', description: 'Patrocinador oficial del bloque “Desayuno con diamantes”.', websiteUrl: '', products: 'Patrocinio académico' },
+      { name: 'Sanofi', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_sanofi.jpg', description: 'Patrocinador oficial del bloque "Desayuno con diamantes".', websiteUrl: '', products: 'Patrocinio académico' },
       { name: 'Seguros Del Camino', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_seguros_delcamino.jpg', description: '', websiteUrl: '', products: '' },
       { name: 'TQ', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_tq.jpg', description: '', websiteUrl: '', products: '' },
       { name: 'Visión Médica', tier: 'Patrocinador', logoUrl: '/assets/logos/logo_vision_medica.png', description: '', websiteUrl: '', products: '' },
